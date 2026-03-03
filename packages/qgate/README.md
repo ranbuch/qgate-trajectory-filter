@@ -5,7 +5,7 @@
 [![CI](https://github.com/ranbuch/qgate-trajectory-filter/actions/workflows/ci.yml/badge.svg)](https://github.com/ranbuch/qgate-trajectory-filter/actions/workflows/ci.yml)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://python.org)
 [![PyPI](https://img.shields.io/pypi/v/qgate.svg)](https://pypi.org/project/qgate/)
-[![License: Source Available](https://img.shields.io/badge/license-Source%20Available%20v1.2-blue.svg)](LICENSE)
+[![License: Source Available](https://img.shields.io/badge/license-Source%20Available%20v1.2-blue.svg)](https://github.com/ranbuch/qgate-trajectory-filter/blob/main/packages/qgate/LICENSE)
 
 This package explores runtime trajectory filtering concepts from
 **US Patent Application Nos. 63/983,831 & 63/989,632** and
@@ -258,7 +258,7 @@ pytest --cov=qgate tests/   # with coverage
 
 ## License
 
-QGATE Source Available Evaluation License v1.2 — see [LICENSE](LICENSE).
+QGATE Source Available Evaluation License v1.2 — see [LICENSE](https://github.com/ranbuch/qgate-trajectory-filter/blob/main/packages/qgate/LICENSE).
 
 Academic research, peer review, and internal corporate evaluation are freely permitted.
 Commercial deployment requires a separate license.
