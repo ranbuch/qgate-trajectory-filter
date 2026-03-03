@@ -2,8 +2,8 @@ site_name: qgate
 site_description: >-
   qgate — hardware-agnostic quantum error suppression middleware for NISQ devices.
   Runtime trajectory filtering via Bell-pair post-selection conditioning, score fusion,
-  and Galton adaptive thresholding. Validated on IBM Quantum hardware with up to 7.3×
-  fidelity improvement. Patent pending.
+  and Galton adaptive thresholding. Validated on IBM Quantum hardware (up to 133 qubits)
+  with up to 7.3× fidelity improvement. Patent pending.
 site_url: https://ranbuch.github.io/qgate-trajectory-filter
 site_author: Ran Buchnik
 repo_url: https://github.com/ranbuch/qgate-trajectory-filter
@@ -119,6 +119,7 @@ nav:
     - QAOA TSVF: experiments/qaoa.md
     - VQE TSVF: experiments/vqe.md
     - QPE TSVF: experiments/qpe.md
+    - Utility-Scale (133Q): experiments/utility-scale.md
   - Adapters:
     - Overview: adapters/overview.md
     - Qiskit: adapters/qiskit.md

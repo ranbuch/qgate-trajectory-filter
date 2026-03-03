@@ -52,6 +52,7 @@ the hardware noise and the perturbation.
 | [**QAOA**](qaoa.md) (p=1) | IBM Torino | Approximation ratio | 0.4268 | **0.8029** | :material-fire: **1.88×** |
 | [**VQE**](vqe.md) (L=3) | IBM Fez | Energy gap to ground | 2.398 | **1.291** | :material-fire: **1.86×** closer |
 | [**QPE**](qpe.md) (t=7) | IBM Fez | Phase fidelity | **0.1569** | 0.0076 | :material-close: N/A |
+| [**Utility-Scale**](utility-scale.md) (133Q) | IBM Torino | Cooling delta | −4.108 | **−4.188** | :material-fire: **Δ = −0.080** |
 
 <figure markdown="span">
   ![IBM hardware probe heatmap showing ancilla signal strength across qubit configurations](../assets/images/experiments/ibm-probe-heatmap.png){ width="600" loading="lazy" }

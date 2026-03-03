@@ -23,11 +23,29 @@ qgate is a hardware-agnostic middleware that uses Score Fusion and Galton-based 
 | **QAOA MaxCut** | IBM Torino | 1.88× approximation ratio at p=1 | ✅ TSVF rescues shallow variational circuits |
 | **VQE (TFIM)** | IBM Fez | Barren plateau avoidance at L=3 | ✅ TSVF selects low-energy trajectories |
 | **QPE (φ=1/3)** | IBM Fez | Standard QPE retains phase; TSVF disrupts | ❌ Phase coherence incompatible with perturbation |
+| **Utility-Scale (133Q)** | IBM Torino | Cooling delta Δ = −0.080 at 16,709 ISA depth | ✅ Galton filter extracts signal from 37× T₁ decoherence |
 
 > **Key insight:** TSVF post-selection delivers significant advantage for
 > amplitude-based algorithms (Grover, QAOA, VQE) but is incompatible with
 > phase-coherence algorithms (QPE), where even mild perturbation destroys
 > the inverse QFT interference pattern.
+
+### Utility-Scale Stress Testing: "Works Clean, Scales Dirty"
+
+To validate `qgate` across both theoretical and physical extremes, we ran a two-phase TFIM benchmark at the quantum critical point ($h/J \approx 3.04$):
+
+| Scale | Environment | ISA Depth | Noise Regime | qgate Advantage | Conclusion |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **16-Qubit** | Aer Simulator (Clean) | 2,290 | Simulated | **+0.7% Improvement** | ✅ **Works Clean:** Validates the underlying mathematical model |
+| **133-Qubit** | IBM Torino (Physical) | 16,709 | Extreme ($37\times T_1$) | **Δ = −0.0798** | ✅ **Scales Dirty:** Galton filter survives massive hardware decoherence |
+
+> **The 133-Qubit Torino Result:** At an ISA depth of 16,709 gates, standard
+> global parity checks collapse entirely, and unmitigated circuit output is
+> dominated by thermal decoherence. Despite this, the `qgate` Galton threshold
+> dynamically isolated a pristine 11.95% statistical tail. By filtering out
+> the hottest trajectories, `qgate` achieved a negative energy cooling delta
+> (Δ = −0.0798) entirely at the classical post-processing layer, with zero
+> variational optimization overhead.
 
 ---
 
@@ -169,6 +187,7 @@ steps for each algorithm are in the respective directories below:
 | [QAOA vs TSVF-QAOA](simulations/qaoa_tsvf/README.md) | IBM Torino | 26–149 | 2,000 | **1.88× approximation ratio** at p=1 |
 | [VQE vs TSVF-VQE](simulations/vqe_tsvf/README.md) | IBM Fez | 33–192 | 4,000 | **Barren plateau avoidance** at L=3 (1.107 energy gap) |
 | [QPE vs TSVF-QPE](simulations/qpe_tsvf/README.md) | IBM Fez | 97–567 | 8,192 | Standard QPE retains phase; perturbation incompatible with QPE |
+| [Utility-Scale TFIM](simulations/tfim_127q/README.md) | IBM Torino | 97–16,709 | 100,000 | **Cooling Δ = −0.080** at 133Q, 37× T₁ decoherence |
 
 ---
 
@@ -192,6 +211,7 @@ qgate-trajectory-filter/
 │   ├── qaoa_tsvf/               # 🔗 QAOA vs TSVF-QAOA MaxCut (IBM Torino)
 │   ├── vqe_tsvf/                # ⚛️  VQE vs TSVF-VQE TFIM (IBM Fez)
 │   ├── qpe_tsvf/                # 📐 QPE vs TSVF-QPE Phase Est. (IBM Fez)
+│   ├── tfim_127q/               # 🔬 133-Qubit Utility-Scale TFIM (IBM Torino)
 │   └── qutip_sims/              # 🧪 QuTiP master-equation sims
 │       └── runs/                #    576+ configs, per-run READMEs
 │
@@ -212,6 +232,7 @@ qgate-trajectory-filter/
 | [QAOA vs TSVF-QAOA](simulations/qaoa_tsvf/README.md) | IBM Torino — 1.88× advantage at p=1 |
 | [VQE vs TSVF-VQE](simulations/vqe_tsvf/README.md) | IBM Fez — barren plateau avoidance at L=3 |
 | [QPE vs TSVF-QPE](simulations/qpe_tsvf/README.md) | IBM Fez — phase coherence study |
+| [Utility-Scale TFIM (133Q)](simulations/tfim_127q/README.md) | IBM Torino — cooling Δ = −0.080 at 37× T₁ |
 | Per-run READMEs | Each `simulations/` directory has objectives, parameters, results, reproduction steps |
 
 ---

@@ -851,8 +851,8 @@ def main():
     parser.add_argument(
         "--layers",
         type=int,
-        default=5,
-        help="Number of ansatz layers (default: 5)",
+        default=1,
+        help="Number of ansatz layers (default: 1)",
     )
     parser.add_argument(
         "--alpha",

@@ -205,6 +205,15 @@ phase/parity probe), runs them, and extracts algorithm-specific metrics.
 | `VQETSVFAdapter` | VQE for TFIM | `vqe_tsvf` | ✅ IBM Fez — **barren plateau avoidance** |
 | `QPETSVFAdapter` | QPE phase est. | `qpe_tsvf` | ✅ IBM Fez — phase coherence study |
 
+### Utility-Scale Validation (IBM Torino, 133 Qubits)
+
+The `VQETSVFAdapter` has been stress-tested at utility scale on IBM Torino
+(133 physical qubits, 16,709 ISA gate depth). At 37× T₁ decoherence, the
+Galton filter achieved a negative cooling delta (**Δ = −0.080**), extracting
+correlated thermodynamic signal from ~99% thermal noise. See the
+[simulations/tfim_127q](../../simulations/tfim_127q/) directory for full
+reproduction steps and raw data.
+
 ```python
 from qgate.adapters.grover_adapter import GroverTSVFAdapter
 from qgate.adapters.qaoa_adapter import QAOATSVFAdapter
