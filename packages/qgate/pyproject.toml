@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "qgate"
-version = "0.5.0"
+version = "0.5.1"
 description = "Quantum Trajectory Filter — runtime post-selection conditioning for quantum circuits"
 readme = "README.md"
 license = { text = "LicenseRef-QGate-Source-Available-v1.2" }
