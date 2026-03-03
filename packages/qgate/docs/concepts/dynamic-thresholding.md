@@ -1,3 +1,11 @@
+---
+description: >-
+  Dynamic thresholding in qgate: rolling z-score, Galton adaptive thresholding with
+  empirical quantile and robust z-score sub-modes, warmup periods, and telemetry for
+  hardware drift adaptation.
+keywords: dynamic thresholding, Galton adaptive threshold, rolling z-score, empirical quantile, robust z-score, hardware drift, quantum threshold adaptation
+---
+
 # Dynamic Thresholding
 
 qgate supports three threshold adaptation strategies, configured via

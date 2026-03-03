@@ -1,3 +1,10 @@
+---
+description: >-
+  How qgate's quantum trajectory filtering works. Bell-pair subsystems, mid-circuit
+  Z-parity measurements, multi-rate monitoring pipeline, and the build-execute-filter cycle.
+keywords: quantum trajectory filtering, Bell pair, Z-parity measurement, mid-circuit measurement, quantum error detection, multi-rate monitoring
+---
+
 # How It Works
 
 qgate implements **quantum trajectory filtering** — a technique that uses

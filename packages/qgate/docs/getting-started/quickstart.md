@@ -1,3 +1,10 @@
+---
+description: >-
+  Quick start guide for qgate. Create a GateConfig, choose an adapter, run the
+  trajectory filter, log results, and use the CLI in under 5 minutes.
+keywords: qgate quickstart, trajectory filter tutorial, quantum error suppression tutorial, GateConfig, MockAdapter, Python quantum computing
+---
+
 # Quick Start
 
 ## 1. Create a configuration

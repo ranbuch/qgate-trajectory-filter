@@ -1,3 +1,15 @@
+---
+description: >-
+  QAOA vs TSVF-QAOA MaxCut experiment on IBM Torino hardware. 1.88× approximation ratio
+  improvement at p=1 using trajectory filtering for shallow variational quantum circuits.
+keywords: QAOA, MaxCut, TSVF, IBM Torino, quantum trajectory filtering, 1.88x improvement, variational quantum algorithm, NISQ
+faq:
+  - q: How much does TSVF improve QAOA MaxCut on IBM hardware?
+    a: At p=1 on IBM Torino, TSVF-QAOA achieves an approximation ratio of 0.80 compared to 0.43 for standard QAOA — a 1.88× improvement. The advantage is strongest at shallow circuit depths.
+  - q: Why does TSVF help QAOA most at p=1?
+    a: At p=1 (shallowest depth), hardware noise most severely degrades the single QAOA layer. TSVF post-selection filters for high-quality trajectories. At higher p, the variational ansatz has enough expressivity to partially self-correct.
+---
+
 # QAOA vs TSVF-QAOA MaxCut (IBM Torino)
 
 > **Patent notice:** US Patent App. Nos. 63/983,831 & 63/989,632 | Israeli Patent App. No. 326915

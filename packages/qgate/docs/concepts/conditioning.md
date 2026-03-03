@@ -1,3 +1,10 @@
+---
+description: >-
+  Conditioning strategies in qgate: global conditioning, hierarchical k-of-N conditioning,
+  and continuous score fusion. Comparison of scaling behavior and acceptance rates.
+keywords: conditioning strategies, global conditioning, hierarchical k-of-N, score fusion, quantum post-selection, acceptance probability, quantum error suppression
+---
+
 # Conditioning Strategies
 
 qgate supports three conditioning strategies, configured via the

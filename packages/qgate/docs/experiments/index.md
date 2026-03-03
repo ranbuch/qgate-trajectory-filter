@@ -1,3 +1,18 @@
+---
+description: >-
+  IBM Quantum hardware experiments validating TSVF trajectory filtering for Grover search,
+  QAOA MaxCut, VQE eigensolvers, and QPE phase estimation. Results from IBM Fez and IBM Torino
+  processors showing up to 7.3× fidelity improvement.
+keywords: IBM Quantum experiments, TSVF, trajectory filtering, Grover search, QAOA MaxCut, VQE barren plateau, QPE phase estimation, IBM Fez, IBM Torino, quantum hardware validation
+faq:
+  - q: What is TSVF trajectory filtering?
+    a: TSVF (Two-State Vector Formalism) trajectory filtering injects a mild chaotic perturbation and uses an ancilla probe to create a post-selectable quality signal. Post-selection retains only high-fidelity execution trajectories.
+  - q: Which quantum algorithms benefit from TSVF?
+    a: Amplitude-encoded algorithms like Grover search (7.3× improvement), QAOA MaxCut (1.88× improvement), and VQE (barren plateau avoidance) benefit from TSVF. Phase-coherence algorithms like QPE do not benefit because perturbation destroys the phase structure.
+  - q: What IBM hardware was used for validation?
+    a: Experiments were run on IBM Fez (156 qubits) for Grover, VQE, and QPE, and IBM Torino (133 qubits) for QAOA, during February–March 2026.
+---
+
 # Hardware Experiments
 
 > **Patent notice:** US Patent App. Nos. 63/983,831 & 63/989,632 | Israeli Patent App. No. 326915

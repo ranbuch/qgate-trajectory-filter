@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+  {# ── Canonical URL ── #}
+  {% if page and page.canonical_url %}
+  <link rel="canonical" href="{{ page.canonical_url }}" />
+  {% endif %}
+
+  {# ── Per-page meta description (falls back to site description) ── #}
+  {% if page and page.meta and page.meta.description %}
+  <meta name="description" content="{{ page.meta.description }}" />
+  {% else %}
+  <meta name="description" content="{{ config.site_description }}" />
+  {% endif %}
+
+  {# ── Per-page keywords ── #}
+  {% if page and page.meta and page.meta.keywords %}
+  <meta name="keywords" content="{{ page.meta.keywords }}" />
+  {% else %}
+  <meta name="keywords" content="quantum computing, quantum error mitigation, NISQ, qiskit, trajectory filter, post-selection, Bell pair, score fusion, qgate" />
+  {% endif %}
+
+  {# ── Open Graph ── #}
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="{{ page.title if page else config.site_name }} — qgate" />
+  <meta property="og:description" content="{{ page.meta.description if page and page.meta and page.meta.description else config.site_description }}" />
+  {% if page and page.canonical_url %}
+  <meta property="og:url" content="{{ page.canonical_url }}" />
+  {% endif %}
+  <meta property="og:site_name" content="qgate — Quantum Trajectory Filter" />
+
+  {# ── Twitter Card ── #}
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="{{ page.title if page else config.site_name }} — qgate" />
+  <meta name="twitter:description" content="{{ page.meta.description if page and page.meta and page.meta.description else config.site_description }}" />
+
+  {# ── JSON-LD Organization Schema ── #}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "qgate",
+    "description": "{{ config.site_description | replace('"', '\\"') }}",
+    "url": "{{ config.site_url }}",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Cross-platform",
+    "author": {
+      "@type": "Person",
+      "name": "Ran Buchnik",
+      "email": "ranbuch@gmail.com"
+    },
+    "license": "https://ranbuch.github.io/qgate-trajectory-filter/license/",
+    "codeRepository": "https://github.com/ranbuch/qgate-trajectory-filter",
+    "programmingLanguage": "Python"
+  }
+  </script>
+
+  {# ── JSON-LD FAQ (only on pages that define faq in front matter) ── #}
+  {% if page and page.meta and page.meta.faq %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {% for item in page.meta.faq %}
+      {
+        "@type": "Question",
+        "name": "{{ item.q | replace('"', '\\"') }}",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "{{ item.a | replace('"', '\\"') }}"
+        }
+      }{% if not loop.last %},{% endif %}
+      {% endfor %}
+    ]
+  }
+  </script>
+  {% endif %}
+{% endblock %}

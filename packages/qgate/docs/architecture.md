@@ -1,3 +1,18 @@
+---
+description: >-
+  Architecture and methodology of qgate's quantum error suppression system.
+  Bell-pair subsystems, mid-circuit Z-parity measurements, conditioning strategies
+  (global, hierarchical k-of-N, score fusion), and validation from QuTiP simulation to IBM hardware.
+keywords: quantum error suppression architecture, Bell pair conditioning, Z-parity measurement, score fusion, hierarchical k-of-N, QuTiP simulation, IBM Quantum validation
+faq:
+  - q: How does qgate suppress quantum errors?
+    a: qgate uses Bell-pair subsystems as noise probes. Mid-circuit Z-parity measurements detect errors without collapsing the computational state. Decision rules (global, hierarchical, or score fusion) then accept or reject each shot based on subsystem fidelity.
+  - q: What is score fusion conditioning?
+    a: Score fusion combines high-frequency and low-frequency parity monitoring scores into a continuous metric using an alpha-weighted average. This soft decision boundary is the most robust strategy on real IBM hardware.
+  - q: What is hierarchical k-of-N conditioning?
+    a: Instead of requiring all subsystems to pass (which fails at scale), hierarchical conditioning accepts shots where at least k out of N subsystems pass each monitoring cycle. This achieves O(1) scaling from N=1 to N=64.
+---
+
 # Architecture & Methodology
 
 > **Patent notice:** US Patent App. Nos. 63/983,831 & 63/989,632 | Israeli Patent App. No. 326915. The underlying invention is patent pending.

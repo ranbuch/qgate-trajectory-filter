@@ -11,6 +11,7 @@ repo_name: ranbuch/qgate-trajectory-filter
 
 theme:
   name: material
+  custom_dir: overrides
   palette:
     - scheme: default
       primary: indigo

@@ -1,3 +1,22 @@
+---
+description: >-
+  qgate is a hardware-agnostic quantum error suppression middleware for NISQ devices.
+  Runtime trajectory filtering via Bell-pair post-selection, score fusion, and Galton
+  adaptive thresholding. Validated on IBM Quantum hardware with up to 7.3× fidelity improvement.
+keywords: quantum error mitigation, NISQ, qiskit, trajectory filter, post-selection, Bell pair, score fusion, Galton thresholding, quantum computing, qgate, IBM Quantum
+faq:
+  - q: What is qgate?
+    a: qgate is a Python middleware library for quantum error suppression on NISQ devices. It filters quantum computation trajectories using Bell-pair post-selection conditioning, score fusion, and adaptive thresholding.
+  - q: What quantum hardware does qgate support?
+    a: qgate supports IBM Quantum hardware via Qiskit, with adapter stubs for Google Cirq and Xanadu PennyLane. It has been validated on IBM Fez (156 qubits) and IBM Torino (133 qubits).
+  - q: How much does qgate improve quantum circuit fidelity?
+    a: In IBM hardware experiments, qgate achieved up to 7.3× fidelity improvement for Grover search (IBM Fez), 1.88× for QAOA MaxCut (IBM Torino), and barren plateau avoidance for VQE (IBM Fez).
+  - q: How do I install qgate?
+    a: Install from PyPI with pip install qgate. For IBM Quantum support use pip install qgate[qiskit]. Requires Python 3.9 or higher.
+  - q: Is qgate open source?
+    a: qgate is released under the QGATE Source Available Evaluation License v1.2, which permits academic research and internal corporate evaluation. Commercial deployment requires a separate license. Patent pending (US 63/983,831, US 63/989,632, IL 326915).
+---
+
 # qgate — Quantum Trajectory Filter
 
 [![PyPI](https://img.shields.io/pypi/v/qgate)](https://pypi.org/project/qgate/)

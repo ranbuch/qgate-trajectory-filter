@@ -1,3 +1,10 @@
+---
+description: >-
+  Score fusion in qgate. Alpha-weighted combination of low-frequency and high-frequency
+  monitoring scores for continuous quality assessment of quantum computation trajectories.
+keywords: score fusion, alpha-weighted scoring, LF HF monitoring, quantum trajectory quality, continuous scoring, quantum error assessment
+---
+
 # Fusion Scoring
 
 Score fusion combines low-frequency and high-frequency monitoring scores

@@ -1,3 +1,11 @@
+---
+description: >-
+  qgate adapter system overview. Pluggable backends for Qiskit, Cirq, PennyLane,
+  and algorithm-specific TSVF adapters for Grover, QAOA, VQE, and QPE.
+  BaseAdapter protocol and custom adapter development guide.
+keywords: qgate adapters, Qiskit adapter, Cirq adapter, PennyLane adapter, TSVF adapter, quantum framework adapter, BaseAdapter, plugin architecture
+---
+
 # Adapters Overview
 
 qgate uses an **adapter pattern** to support multiple quantum frameworks.

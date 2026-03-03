@@ -1,3 +1,16 @@
+---
+description: >-
+  Grover search vs TSVF-Grover experiment on IBM Fez hardware. 7.3× success probability
+  improvement at iteration 4 using trajectory filtering with chaotic perturbation and
+  parity probe ancilla post-selection.
+keywords: Grover search, TSVF, IBM Fez, quantum trajectory filtering, 7.3x improvement, post-selection, NISQ, quantum search algorithm
+faq:
+  - q: How much does TSVF improve Grover search on IBM hardware?
+    a: At iteration 4 on IBM Fez, TSVF-Grover achieves 61% success probability compared to 8.3% for standard Grover — a 7.3× improvement. The advantage grows as standard Grover's signal degrades at higher iteration counts.
+  - q: At what point does TSVF outperform standard Grover?
+    a: The crossover occurs at iteration 3. At low iterations (1-2), standard Grover still has strong signal and TSVF adds overhead. At iteration 3+, hardware noise degrades the amplitude pattern, and TSVF post-selection filters for surviving trajectories.
+---
+
 # Grover vs TSVF-Grover (IBM Fez)
 
 > **Patent notice:** US Patent App. Nos. 63/983,831 & 63/989,632 | Israeli Patent App. No. 326915

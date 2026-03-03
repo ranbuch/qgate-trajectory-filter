@@ -1,3 +1,10 @@
+---
+description: >-
+  PennyLane adapter for qgate. Currently a stub implementation — contributions welcome.
+  Install with pip install qgate[pennylane].
+keywords: PennyLane adapter, Xanadu PennyLane, qgate PennyLane, quantum framework adapter, stub implementation
+---
+
 # PennyLane Adapter
 
 !!! warning "Stub Implementation"

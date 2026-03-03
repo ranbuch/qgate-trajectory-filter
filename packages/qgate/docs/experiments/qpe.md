@@ -1,3 +1,16 @@
+---
+description: >-
+  QPE vs TSVF-QPE phase estimation experiment on IBM Fez. Demonstrates that TSVF trajectory
+  filtering is incompatible with phase-coherence-encoded algorithms — perturbation destroys
+  the inverse QFT interference pattern. A negative but scientifically valuable result.
+keywords: QPE, quantum phase estimation, TSVF, IBM Fez, phase coherence, inverse QFT, negative result, quantum algorithm limitations
+faq:
+  - q: Why doesn't TSVF work for QPE?
+    a: QPE encodes its answer in phase coherence between precision qubits. Any perturbation — even mild rotations — disrupts these phase relationships, causing the inverse QFT to produce a diffuse distribution instead of a sharp peak. Post-selection cannot recover destroyed phase information.
+  - q: Does standard QPE work on IBM Fez hardware?
+    a: Yes, standard QPE correctly identifies the eigenphase φ ≈ 1/3 at all precision levels (t=3 to t=7) on IBM Fez, even at circuit depth 411. The hardware preserves phase structure well enough without trajectory filtering.
+---
+
 # QPE vs TSVF-QPE Phase Estimation (IBM Fez)
 
 > **Patent notice:** US Patent App. Nos. 63/983,831 & 63/989,632 | Israeli Patent App. No. 326915

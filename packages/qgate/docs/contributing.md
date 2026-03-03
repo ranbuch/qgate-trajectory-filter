@@ -1,3 +1,10 @@
+---
+description: >-
+  Contributing guide for qgate. Development setup, testing, code quality standards,
+  project conventions, and areas for contribution including Cirq and PennyLane adapters.
+keywords: qgate contributing, development setup, quantum computing open source, Python testing, ruff, mypy, conventional commits
+---
+
 # Contributing
 
 Thank you for your interest in contributing to qgate!

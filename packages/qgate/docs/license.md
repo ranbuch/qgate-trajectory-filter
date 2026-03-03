@@ -1,3 +1,11 @@
+---
+description: >-
+  QGATE Source Available Evaluation License v1.2. Permits academic research and internal
+  corporate evaluation. Commercial deployment requires a separate license.
+  Patent pending: US 63/983,831, US 63/989,632, IL 326915.
+keywords: qgate license, source available license, quantum computing license, patent pending, commercial license, academic research license
+---
+
 # License
 
 ## QGATE Source Available Evaluation License (v1.2)

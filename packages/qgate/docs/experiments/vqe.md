@@ -1,3 +1,16 @@
+---
+description: >-
+  VQE vs TSVF-VQE experiment for the Transverse-Field Ising Model on IBM Fez.
+  Demonstrates barren plateau avoidance at ansatz depth L=3 using trajectory filtering,
+  maintaining smooth energy descent where standard VQE loses gradient signal.
+keywords: VQE, barren plateau, TSVF, IBM Fez, quantum trajectory filtering, variational quantum eigensolver, Ising model, NISQ, gradient signal
+faq:
+  - q: How does TSVF help VQE avoid barren plateaus?
+    a: Standard VQE hits a barren plateau at L=3 where energy jumps by 1.2 units. TSVF-VQE maintains smooth energy descent by filtering for low-energy execution paths even when the average trajectory has lost gradient information.
+  - q: What is the energy improvement at the barren plateau?
+    a: At L=3 on IBM Fez, the energy gap between standard VQE and TSVF-VQE is 1.107 units — the largest advantage point, confirming TSVF is most beneficial exactly where standard VQE fails.
+---
+
 # VQE vs TSVF-VQE for TFIM (IBM Fez)
 
 > **Patent notice:** US Patent App. Nos. 63/983,831 & 63/989,632 | Israeli Patent App. No. 326915

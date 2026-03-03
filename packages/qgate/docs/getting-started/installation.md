@@ -1,3 +1,11 @@
+---
+description: >-
+  Install qgate from PyPI or source. Core package with numpy/pydantic/typer,
+  optional extras for Qiskit, Cirq, PennyLane, CSV, and Parquet logging.
+  Requires Python 3.9+.
+keywords: qgate installation, pip install qgate, quantum computing setup, qiskit adapter, Python quantum library
+---
+
 # Installation
 
 ## From source (recommended during development)

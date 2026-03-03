@@ -1,3 +1,10 @@
+---
+description: >-
+  qgate CLI reference. Commands for running trajectory filters, validating configs,
+  listing adapters, and exporting JSON schemas. Powered by Typer.
+keywords: qgate CLI, command line interface, qgate run, qgate validate, quantum CLI tool, Typer CLI
+---
+
 # CLI Reference
 
 qgate includes a command-line interface powered by [typer](https://typer.tiangolo.com).

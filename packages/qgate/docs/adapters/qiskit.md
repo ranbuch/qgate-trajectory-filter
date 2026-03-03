@@ -1,3 +1,10 @@
+---
+description: >-
+  Qiskit adapter for qgate. Dynamic circuits with Bell-pair subsystems, scramble layers,
+  and ancilla-based mid-circuit Z-parity measurements. IBM Quantum hardware integration.
+keywords: Qiskit adapter, IBM Quantum, dynamic circuits, Bell pair, mid-circuit measurement, quantum hardware, qgate Qiskit
+---
+
 # Qiskit Adapter
 
 The `QiskitAdapter` builds dynamic circuits with Bell-pair subsystems,
