@@ -95,10 +95,9 @@ extra:
       link: https://github.com/ranbuch/qgate-trajectory-filter
     - icon: fontawesome/brands/python
       link: https://pypi.org/project/qgate/
-  # Uncomment and add your Google Analytics measurement ID when ready:
-  # analytics:
-  #   provider: google
-  #   property: G-XXXXXXXXXX
+  analytics:
+    provider: google
+    property: G-RH845W0BYE
   generator: false
 
 nav:
