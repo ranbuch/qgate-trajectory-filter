@@ -73,4 +73,4 @@ The underlying invention is patent pending.
 
 ## License
 
-QGATE Source Available Evaluation License v1.2 — see [LICENSE](../LICENSE)
+QGATE Source Available Evaluation License v1.2 — see [License](license.md)

@@ -138,7 +138,7 @@ class RunLogger:
     Args:
         path:   Output file path (suffix determines format:
                 ``.jsonl``, ``.csv``, or ``.parquet``).
-        format: Explicit format override (``"jsonl"`` | ``"csv"`` |
+        fmt:    Explicit format override (``"jsonl"`` | ``"csv"`` |
                 ``"parquet"``).  If *None* the format is inferred
                 from *path*.
     """
