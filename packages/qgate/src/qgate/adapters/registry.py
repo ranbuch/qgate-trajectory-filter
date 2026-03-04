@@ -21,12 +21,19 @@ from __future__ import annotations
 import sys
 from typing import Any
 
-if sys.version_info >= (3, 10):
-    from importlib.metadata import entry_points
-else:
-    from importlib.metadata import entry_points
+from importlib.metadata import entry_points
 
 _EP_GROUP = "qgate.adapters"
+
+
+def _get_group():
+    """Return entry points for the qgate.adapters group, compatible with Python 3.9–3.13+."""
+    if sys.version_info >= (3, 10):
+        # Python 3.10+: entry_points() accepts group= keyword directly
+        return entry_points(group=_EP_GROUP)
+    else:
+        # Python 3.9: entry_points() returns a plain dict keyed by group
+        return entry_points().get(_EP_GROUP, [])
 
 
 def list_adapters() -> dict[str, str]:
@@ -34,18 +41,7 @@ def list_adapters() -> dict[str, str]:
 
     Reads the ``qgate.adapters`` entry-point group.
     """
-    eps = entry_points()
-    # Python 3.9/3.11 compat: entry_points() returns dict on 3.9, SelectableGroups on 3.12+
-    if isinstance(eps, dict):
-        group = eps.get(_EP_GROUP, [])
-    else:
-        group = eps.get(group=_EP_GROUP) if hasattr(eps, "get") else []
-
-    # selectable groups on 3.9
-    if hasattr(group, "names"):  # pragma: no cover — py3.12+
-        return {ep.name: ep.value for ep in group}
-
-    return {ep.name: ep.value for ep in group}
+    return {ep.name: ep.value for ep in _get_group()}
 
 
 def load_adapter(name: str, **kwargs: Any) -> type:
@@ -62,13 +58,7 @@ def load_adapter(name: str, **kwargs: Any) -> type:
         KeyError: If *name* is not a registered adapter.
         ImportError: If the adapter's optional dependency is missing.
     """
-    eps = entry_points()
-    if isinstance(eps, dict):
-        group = eps.get(_EP_GROUP, [])
-    else:
-        group = eps.get(group=_EP_GROUP) if hasattr(eps, "get") else []
-
-    for ep in group:
+    for ep in _get_group():
         if ep.name == name:
             cls: type = ep.load()
             return cls
