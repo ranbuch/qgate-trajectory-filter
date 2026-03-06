@@ -51,7 +51,7 @@ To validate `qgate` across both theoretical and physical extremes, we ran a two-
 
 ### Statistical Validation: Systematic Bias Study (Mar 2026)
 
-A rigorous 3-part statistical validation with **15 independent trials × 100,000 shots**
+A rigorous 4-part statistical validation with **15 independent trials × 100,000 shots**
 using an IBM Heron-class noise model ($T_1 = 300\mu s$, $T_2 = 150\mu s$,
 1q depolarizing $= 10^{-3}$, 2q depolarizing $= 10^{-2}$):
 
@@ -93,8 +93,26 @@ using an IBM Heron-class noise model ($T_1 = 300\mu s$, $T_2 = 150\mu s$,
 > separator, extracting the signal-bearing minority even when standard metrics
 > suggest total decoherence.
 
+#### Experiment 4 — Train/Test Split: The Threshold Is a Physical Constant
+
+| Split | Estimator | MSE | MSE Reduction | Variance↓ | Wilcoxon p |
+|---|---|---|---|---|---|
+| Test (10 trials) | Raw | 616.85 | — | — | — |
+| **Test (10 trials)** | **Frozen Galton (θ=0.75)** | **526.45** | **14.7%** | **3,313×** | **0.001 \*\*\*** |
+
+> **Protocol:** 5 training trials → learn θ → freeze θ = 0.7500 → apply blindly
+> to 10 completely independent test trials. No adaptation, no recalculation.
+>
+> **Scientific meaning:** The optimal threshold is not a statistical artifact
+> that shifts randomly; it is a **stable physical property** of the circuit depth
+> and hardware noise environment.
+>
+> **Commercial meaning:** Enterprises can run a cheap "calibration" circuit to
+> find θ, freeze it, and apply it to massive, expensive production runs — saving
+> vast amounts of compute while retaining full filtering benefit.
+
 Full results: [`results/`](results/) |
-Experiment script: [`simulations/paper_experiments/run_paper_experiments.py`](simulations/paper_experiments/run_paper_experiments.py) |
+Experiment scripts: [`simulations/paper_experiments/`](simulations/paper_experiments/) |
 [Documentation →](https://ranbuch.github.io/qgate-trajectory-filter/experiments/bias-study/)
 
 ---

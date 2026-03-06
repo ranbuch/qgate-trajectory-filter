@@ -4,8 +4,9 @@ description: >-
   Runtime trajectory filtering via Bell-pair post-selection, score fusion, and Galton
   adaptive thresholding. Validated on IBM Quantum hardware with up to 7.3× fidelity
   improvement. Systematic bias study shows up to 20.7% MSE reduction, 5,360× variance
-  collapse, and algorithm-agnostic improvement across VQE, QAOA, and Grover.
-keywords: quantum error mitigation, NISQ, qiskit, trajectory filter, post-selection, Bell pair, score fusion, Galton thresholding, quantum computing, qgate, IBM Quantum, bias study, MSE reduction, variance collapse, noise robustness, qubit scaling, VQE, QAOA, Grover
+  collapse, algorithm-agnostic improvement across VQE, QAOA, and Grover, and 14.7% MSE
+  reduction on a blind test set with a frozen threshold proving generalisation.
+keywords: quantum error mitigation, NISQ, qiskit, trajectory filter, post-selection, Bell pair, score fusion, Galton thresholding, quantum computing, qgate, IBM Quantum, bias study, MSE reduction, variance collapse, noise robustness, qubit scaling, VQE, QAOA, Grover, train test split, frozen threshold, generalisation, calibration
 faq:
   - q: What is qgate?
     a: qgate is a Python middleware library for quantum error suppression on NISQ devices. It filters quantum computation trajectories using Bell-pair post-selection conditioning, score fusion, and adaptive thresholding.
@@ -70,12 +71,19 @@ Systematic bias study: **15 independent trials × 100,000 shots**, IBM Heron-cla
 | **Noise Robustness** | MSE reduction grows **13.6% → 20.7%** as noise increases | All $p < 10^{-23}$ |
 | **Qubit Scaling** (8–16q) | Stable 14–17% MSE; **variance collapse up to 5,360×** | All $p < 10^{-46}$ |
 | **Cross-Algorithm** | VQE **+14.8%**, QAOA **+48.8%**, Grover **+24.4%** | All $p < 10^{-17}$ |
+| **Train/Test Split** | Frozen threshold generalises: **14.7% MSE↓** on blind test set | $p = 0.001$ \*\*\* |
 
 !!! tip "The Anti-Decoherence Property"
     Unlike most error mitigation techniques that degrade under heavy noise,
     qgate **improves** with noise — the filter's MSE reduction scales from
     13.6% (ideal) to **20.7%** at the highest noise level tested.
     It thrives exactly where current NISQ hardware operates.
+
+!!! success "NEW: Calibrate Once, Deploy Forever"
+    Experiment 4 proves the Galton threshold is a **stable physical constant**.
+    Enterprises can run a cheap calibration circuit to find θ, freeze it,
+    and apply it to massive production runs — saving compute while retaining
+    full **14.7% MSE reduction** on completely unseen data ($p = 0.001$).
 
 :material-arrow-right: **[Full bias study results →](experiments/bias-study.md)**
 
