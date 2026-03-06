@@ -74,6 +74,12 @@ from qgate.threshold import (
     estimate_diffusion_width,
 )
 
+# ── QgateSampler OS layer ─────────────────────────────────────────────────
+# Transparent drop-in SamplerV2 replacement with autonomous probe injection
+# and Galton-filtered result reconstruction.
+# NOTICE: Pre-patent proprietary code — do NOT push to public repositories.
+from qgate.sampler import QgateSampler, SamplerConfig
+
 __all__ = [
     "AdapterKind",
     # Primary API
@@ -97,7 +103,10 @@ __all__ = [
     "QAOATSVFAdapter",
     # QPE/TSVF adapter
     "QPETSVFAdapter",
+    # QgateSampler OS
+    "QgateSampler",
     "RunLogger",
+    "SamplerConfig",
     "ThresholdMode",
     "TrajectoryFilter",
     # VQE/TSVF adapter
