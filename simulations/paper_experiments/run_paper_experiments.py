@@ -224,7 +224,10 @@ def build_backend(depol_1q: float = 1e-3, depol_2q: float = 1e-2):
     err_meas = thermal_relaxation_error(t1, t2, g_meas)
     model.add_all_qubit_quantum_error(err_meas, ["measure"])
 
-    return AerSimulator(noise_model=model)
+    # Force 'statevector' method — Aer applies noise via Monte-Carlo trajectory
+    # sampling on top of statevector.  This needs O(2^n) memory (~1 MB for 16q)
+    # versus density_matrix's O(4^n) (~64 GB for 16q, OOM on 36 GB machine).
+    return AerSimulator(noise_model=model, method="statevector")
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -550,17 +553,20 @@ def run_scaling(
         all_results[f"{nq}q"] = {k: s.to_dict() for k, s in stats.items()}
         _print_stats_table(stats, f"{nq} qubits")
 
-    data = {
-        "experiment": "qubit_scaling",
-        "timestamp": time.strftime("%Y%m%d_%H%M%S"),
-        "qubit_counts": qubit_counts, "shots": shots, "n_trials": n_trials,
-        "n_layers": n_layers,
-        "noise": "depol_1q=1e-3, depol_2q=1e-2",
-        "results": all_results,
-    }
-    path = _save(data, f"qubit_scaling_{n_trials}t", output_dir)
+        # Incremental save after each qubit count (don't lose data on crash)
+        partial = {
+            "experiment": "qubit_scaling",
+            "timestamp": time.strftime("%Y%m%d_%H%M%S"),
+            "qubit_counts": qubit_counts, "shots": shots, "n_trials": n_trials,
+            "n_layers": n_layers,
+            "noise": "depol_1q=1e-3, depol_2q=1e-2",
+            "results": dict(all_results),  # copy so far
+        }
+        partial_path = _save(partial, f"qubit_scaling_{n_trials}t", output_dir)
+        print(f"  [checkpoint] saved to: {partial_path}")
+
     _print_scaling_summary(all_results, qubit_counts)
-    print(f"\n  Results saved to: {path}")
+    print(f"\n  Final results in: {partial_path}")
     return all_results
 
 

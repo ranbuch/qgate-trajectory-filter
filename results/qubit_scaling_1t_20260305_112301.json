@@ -1,0 +1,109 @@
+{
+  "experiment": "qubit_scaling",
+  "timestamp": "20260305_112301",
+  "qubit_counts": [
+    8,
+    12,
+    16
+  ],
+  "shots": 1000,
+  "n_trials": 1,
+  "n_layers": 3,
+  "noise": "depol_1q=1e-3, depol_2q=1e-2",
+  "results": {
+    "8q": {
+      "raw": {
+        "name": "A: Raw",
+        "mean_value": -0.284,
+        "bias": 24.614484421987733,
+        "variance": 0.0,
+        "std": 0.0,
+        "mse": 605.8728433602768,
+        "ci_95_lower": -0.284,
+        "ci_95_upper": -0.284,
+        "bias_pvalue": 1.0,
+        "mean_acceptance": 1.0,
+        "values": [
+          -0.284
+        ]
+      },
+      "ancilla": {
+        "name": "B: Ancilla",
+        "mean_value": -0.34065934065934067,
+        "bias": 24.557825081328392,
+        "variance": 0.0,
+        "std": 0.0,
+        "mse": 603.0867727251218,
+        "ci_95_lower": -0.34065934065934067,
+        "ci_95_upper": -0.34065934065934067,
+        "bias_pvalue": 1.0,
+        "mean_acceptance": 0.364,
+        "values": [
+          -0.34065934065934067
+        ]
+      },
+      "ancilla_galton": {
+        "name": "C: Ancilla+Galton",
+        "mean_value": -2.033816425120773,
+        "bias": 22.86466799686696,
+        "variance": 0.0,
+        "std": 0.0,
+        "mse": 522.7930426069521,
+        "ci_95_lower": -2.033816425120773,
+        "ci_95_upper": -2.033816425120773,
+        "bias_pvalue": 1.0,
+        "mean_acceptance": 0.207,
+        "values": [
+          -2.033816425120773
+        ]
+      }
+    },
+    "12q": {
+      "raw": {
+        "name": "A: Raw",
+        "mean_value": 0.6,
+        "bias": 37.989719295314224,
+        "variance": 0.0,
+        "std": 0.0,
+        "mse": 1443.2187721367698,
+        "ci_95_lower": 0.6,
+        "ci_95_upper": 0.6,
+        "bias_pvalue": 1.0,
+        "mean_acceptance": 1.0,
+        "values": [
+          0.6
+        ]
+      },
+      "ancilla": {
+        "name": "B: Ancilla",
+        "mean_value": -0.1554524361948956,
+        "bias": 37.23426685911933,
+        "variance": 0.0,
+        "std": 0.0,
+        "mse": 1386.390628536112,
+        "ci_95_lower": -0.1554524361948956,
+        "ci_95_upper": -0.1554524361948956,
+        "bias_pvalue": 1.0,
+        "mean_acceptance": 0.431,
+        "values": [
+          -0.1554524361948956
+        ]
+      },
+      "ancilla_galton": {
+        "name": "C: Ancilla+Galton",
+        "mean_value": -3.2913907284768213,
+        "bias": 34.0983285668374,
+        "variance": 0.0,
+        "std": 0.0,
+        "mse": 1162.6960110519997,
+        "ci_95_lower": -3.2913907284768213,
+        "ci_95_upper": -3.2913907284768213,
+        "bias_pvalue": 1.0,
+        "mean_acceptance": 0.151,
+        "values": [
+          -3.2913907284768213
+        ]
+      }
+    }
+  }
+}
