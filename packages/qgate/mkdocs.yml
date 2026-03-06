@@ -115,6 +115,7 @@ nav:
     - Dynamic Thresholding: concepts/dynamic-thresholding.md
   - Hardware Experiments:
     - experiments/index.md
+    - Statistical Validation (Bias Study): experiments/bias-study.md
     - Grover TSVF: experiments/grover.md
     - QAOA TSVF: experiments/qaoa.md
     - VQE TSVF: experiments/vqe.md

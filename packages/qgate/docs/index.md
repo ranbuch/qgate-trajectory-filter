@@ -2,15 +2,17 @@
 description: >-
   qgate is a hardware-agnostic quantum error suppression middleware for NISQ devices.
   Runtime trajectory filtering via Bell-pair post-selection, score fusion, and Galton
-  adaptive thresholding. Validated on IBM Quantum hardware with up to 7.3× fidelity improvement.
-keywords: quantum error mitigation, NISQ, qiskit, trajectory filter, post-selection, Bell pair, score fusion, Galton thresholding, quantum computing, qgate, IBM Quantum
+  adaptive thresholding. Validated on IBM Quantum hardware with up to 7.3× fidelity
+  improvement. Systematic bias study shows up to 20.7% MSE reduction, 5,360× variance
+  collapse, and algorithm-agnostic improvement across VQE, QAOA, and Grover.
+keywords: quantum error mitigation, NISQ, qiskit, trajectory filter, post-selection, Bell pair, score fusion, Galton thresholding, quantum computing, qgate, IBM Quantum, bias study, MSE reduction, variance collapse, noise robustness, qubit scaling, VQE, QAOA, Grover
 faq:
   - q: What is qgate?
     a: qgate is a Python middleware library for quantum error suppression on NISQ devices. It filters quantum computation trajectories using Bell-pair post-selection conditioning, score fusion, and adaptive thresholding.
   - q: What quantum hardware does qgate support?
     a: qgate supports IBM Quantum hardware via Qiskit, with adapter stubs for Google Cirq and Xanadu PennyLane. It has been validated on IBM Fez (156 qubits) and IBM Torino (133 qubits).
   - q: How much does qgate improve quantum circuit fidelity?
-    a: In IBM hardware experiments, qgate achieved up to 7.3× fidelity improvement for Grover search (IBM Fez), 1.88× for QAOA MaxCut (IBM Torino), and barren plateau avoidance for VQE (IBM Fez).
+    a: In IBM hardware experiments, qgate achieved up to 7.3× fidelity improvement for Grover search (IBM Fez), 1.88× for QAOA MaxCut (IBM Torino), and barren plateau avoidance for VQE (IBM Fez). In systematic bias studies, it reduced MSE by up to 20.7% and variance by up to 5,360×.
   - q: How do I install qgate?
     a: Install from PyPI with pip install qgate. For IBM Quantum support use pip install qgate[qiskit]. Requires Python 3.9 or higher.
   - q: Is qgate open source?
@@ -56,6 +58,26 @@ Validated on real IBM Quantum processors with up to **7.3× fidelity improvement
     a negative cooling delta (**Δ = −0.080**), extracting correlated signal from
     ~99% thermal noise across 133 physical qubits — with zero variational
     optimization overhead. See [Utility-Scale Stress Test](experiments/utility-scale.md).
+
+---
+
+## :material-chart-bell-curve: Statistical Validation (NEW — Mar 2026)
+
+Systematic bias study: **15 independent trials × 100,000 shots**, IBM Heron-class noise model.
+
+| Experiment | Key Finding | Significance |
+|---|---|---|
+| **Noise Robustness** | MSE reduction grows **13.6% → 20.7%** as noise increases | All $p < 10^{-23}$ |
+| **Qubit Scaling** (8–16q) | Stable 14–17% MSE; **variance collapse up to 5,360×** | All $p < 10^{-46}$ |
+| **Cross-Algorithm** | VQE **+14.8%**, QAOA **+48.8%**, Grover **+24.4%** | All $p < 10^{-17}$ |
+
+!!! tip "The Anti-Decoherence Property"
+    Unlike most error mitigation techniques that degrade under heavy noise,
+    qgate **improves** with noise — the filter's MSE reduction scales from
+    13.6% (ideal) to **20.7%** at the highest noise level tested.
+    It thrives exactly where current NISQ hardware operates.
+
+:material-arrow-right: **[Full bias study results →](experiments/bias-study.md)**
 
 ---
 

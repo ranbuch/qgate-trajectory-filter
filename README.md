@@ -49,6 +49,56 @@ To validate `qgate` across both theoretical and physical extremes, we ran a two-
 
 ---
 
+### Statistical Validation: Systematic Bias Study (Mar 2026)
+
+A rigorous 3-part statistical validation with **15 independent trials × 100,000 shots**
+using an IBM Heron-class noise model ($T_1 = 300\mu s$, $T_2 = 150\mu s$,
+1q depolarizing $= 10^{-3}$, 2q depolarizing $= 10^{-2}$):
+
+#### Experiment 1 — Noise Robustness: Filter Improves as Noise Increases
+
+| Noise Level | Raw MSE | Galton MSE | MSE Reduction |
+|---|---|---|---|
+| Ideal (0) | 618.9 | 534.4 | **13.6%** |
+| 1×10⁻³ | 628.1 | 526.1 | **16.2%** |
+| 1×10⁻² | 619.1 | 497.5 | **19.7%** |
+| 5×10⁻² | 619.8 | 491.6 | **20.7%** |
+
+> **Anti-decoherence property:** Unlike most error mitigation techniques that
+> degrade under heavy noise, qgate's Galton filter **improves from 13.6% to
+> 20.7% MSE reduction** as noise increases. It thrives exactly where current
+> NISQ hardware operates.
+
+#### Experiment 2 — Qubit Scaling: Stable Performance, Extraordinary Variance Collapse
+
+| Qubits | Raw MSE | Galton MSE | MSE↓ | Variance↓ |
+|---|---|---|---|---|
+| 8 | 615.6 | 526.2 | **14.5%** | **5,360×** |
+| 12 | 1,384.9 | 1,156.3 | **16.5%** | **2,193×** |
+| 16 | 2,480.4 | 2,121.6 | **14.5%** | **628×** |
+
+> **Variance collapse:** The filter converts noisy estimates (σ ≈ 0.7) into
+> near-deterministic ones (σ ≈ 0.01), a **628× to 5,360× variance reduction**.
+
+#### Experiment 3 — Cross-Algorithm: Algorithm-Agnostic Error Suppression
+
+| Algorithm | Metric | Raw → Galton | MSE Reduction | Wilcoxon p |
+|---|---|---|---|---|
+| **VQE / TFIM** | Energy | −0.06 → **−1.96** | **14.8%** | $< 10^{-45}$ |
+| **QAOA / MaxCut** | Approx ratio | 0.556 → **0.683** | **48.8%** | $< 10^{-38}$ |
+| **Grover** | P(target) | 0.243 → **0.343** | **24.4%** | $< 10^{-17}$ |
+
+> **The key discovery:** Quantum noise produces two distinct populations — a
+> thermalized bulk and a coherent subset. The Galton filter acts as a coherence
+> separator, extracting the signal-bearing minority even when standard metrics
+> suggest total decoherence.
+
+Full results: [`results/`](results/) |
+Experiment script: [`simulations/paper_experiments/run_paper_experiments.py`](simulations/paper_experiments/run_paper_experiments.py) |
+[Documentation →](https://ranbuch.github.io/qgate-trajectory-filter/experiments/bias-study/)
+
+---
+
 ## The Problem: Noise Kills Quantum Advantage
 
 Every NISQ circuit runs inside a storm of decoherence, crosstalk, and gate
@@ -165,7 +215,16 @@ pip install qgate[all]         # Everything
 
 ## Experimental Validation
 
-All claims are backed by reproducible experiments on **real IBM Quantum hardware**:
+All claims are backed by reproducible experiments on **real IBM Quantum hardware**
+and systematic statistical benchmarks:
+
+### Statistical Validation (Bias Study, Mar 2026)
+
+| Experiment | Configuration | Key Finding |
+|---|---|---|
+| [Noise robustness](https://ranbuch.github.io/qgate-trajectory-filter/experiments/bias-study/#experiment-1-noise-robustness) | 8q, 7 noise levels | MSE↓ 13.6–20.7%, **improves with noise** |
+| [Qubit scaling](https://ranbuch.github.io/qgate-trajectory-filter/experiments/bias-study/#experiment-2-qubit-scaling) | 8/12/16 qubits | Stable MSE↓ 14–17%, **variance↓ up to 5,360×** |
+| [Cross-algorithm](https://ranbuch.github.io/qgate-trajectory-filter/experiments/bias-study/#experiment-3-cross-algorithm-validation) | VQE, QAOA, Grover | **Algorithm-agnostic** MSE↓ 14.8–48.8% |
 
 ### Core Conditioning Experiments
 
@@ -201,6 +260,11 @@ qgate-trajectory-filter/
 │   ├── tests/                   #    376 unit tests (pytest)
 │   └── pyproject.toml           #    Build config (hatchling)
 │
+├── results/                     # 📊 Bias study & experiment result JSONs
+│   ├── noise_sweep_8q_15t_*.json    # Exp 1: Noise robustness (7 levels)
+│   ├── qubit_scaling_15t_*.json     # Exp 2: 8/12/16 qubit scaling
+│   └── cross_algo_8q_15t_*.json     # Exp 3: VQE/QAOA/Grover validation
+│
 ├── simulations/
 │   ├── ibm_hardware/            # 🔬 IBM Quantum conditioning experiments
 │   │   ├── results.csv          #    120 rows (Marrakesh)
@@ -227,6 +291,7 @@ qgate-trajectory-filter/
 | Resource | Description |
 |---|---|
 | [Architecture & Methodology](docs/architecture.md) | System design, conditioning strategies, TSVF experiments, validation chain |
+| [Statistical Validation (Bias Study)](https://ranbuch.github.io/qgate-trajectory-filter/experiments/bias-study/) | MSE↓ up to 20.7%, variance↓ 5,360×, algorithm-agnostic across VQE/QAOA/Grover |
 | [Package API Reference](packages/qgate/README.md) | Full `qgate` API docs, install guide, class/function reference |
 | [Grover vs TSVF-Grover](simulations/grover_tsvf/README.md) | IBM Fez — 7.3× advantage at iteration 4 |
 | [QAOA vs TSVF-QAOA](simulations/qaoa_tsvf/README.md) | IBM Torino — 1.88× advantage at p=1 |

@@ -1,9 +1,10 @@
 ---
 description: >-
-  IBM Quantum hardware experiments validating TSVF trajectory filtering for Grover search,
-  QAOA MaxCut, VQE eigensolvers, and QPE phase estimation. Results from IBM Fez and IBM Torino
-  processors showing up to 7.3× fidelity improvement.
-keywords: IBM Quantum experiments, TSVF, trajectory filtering, Grover search, QAOA MaxCut, VQE barren plateau, QPE phase estimation, IBM Fez, IBM Torino, quantum hardware validation
+  IBM Quantum hardware experiments and statistical validation of qgate TSVF trajectory
+  filtering for Grover search, QAOA MaxCut, VQE eigensolvers, and QPE phase estimation.
+  Results from IBM Fez, IBM Torino, and systematic bias study with up to 20.7% MSE
+  reduction and 5,360× variance collapse.
+keywords: IBM Quantum experiments, TSVF, trajectory filtering, Grover search, QAOA MaxCut, VQE barren plateau, QPE phase estimation, IBM Fez, IBM Torino, quantum hardware validation, bias study, MSE reduction, variance collapse, noise robustness, qubit scaling
 faq:
   - q: What is TSVF trajectory filtering?
     a: TSVF (Two-State Vector Formalism) trajectory filtering injects a mild chaotic perturbation and uses an ancilla probe to create a post-selectable quality signal. Post-selection retains only high-fidelity execution trajectories.
@@ -11,6 +12,8 @@ faq:
     a: Amplitude-encoded algorithms like Grover search (7.3× improvement), QAOA MaxCut (1.88× improvement), and VQE (barren plateau avoidance) benefit from TSVF. Phase-coherence algorithms like QPE do not benefit because perturbation destroys the phase structure.
   - q: What IBM hardware was used for validation?
     a: Experiments were run on IBM Fez (156 qubits) for Grover, VQE, and QPE, and IBM Torino (133 qubits) for QAOA, during February–March 2026.
+  - q: How much does qgate reduce MSE in systematic benchmarks?
+    a: In systematic bias studies with 15 trials and 100,000 shots, qgate reduced MSE by 13.6–20.7% across noise levels, 14.5–16.5% across qubit counts (8–16), and 14.8–48.8% across algorithms (VQE, QAOA, Grover).
 ---
 
 # Hardware Experiments
@@ -110,6 +113,29 @@ See each experiment page for specific commands.
   ![Acceptance rate vs circuit depth across IBM Quantum experiments showing stable post-selection rates](../assets/images/experiments/ibm-acceptance-vs-depth.png){ width="600" loading="lazy" }
   <figcaption>Acceptance rate versus transpiled circuit depth across all IBM Quantum experiments. Post-selection rates remain stable (25–50%) even as circuit depth grows, confirming the probe ancilla selects a meaningful trajectory subset.</figcaption>
 </figure>
+
+---
+
+## :material-chart-bell-curve: Statistical Validation: Bias Study (Mar 2026)
+
+Beyond the real-hardware TSVF experiments above, we conducted a rigorous
+**3-part statistical validation** of qgate's Galton trajectory filter under
+controlled, reproducible conditions — **15 independent trials × 100,000 shots**
+with an IBM Heron-class noise model.
+
+| Experiment | Key Finding | Significance |
+|---|---|---|
+| [**Noise Robustness**](bias-study.md#experiment-1-noise-robustness) | MSE reduction **grows from 13.6% → 20.7%** as noise increases | All $p < 10^{-23}$ |
+| [**Qubit Scaling**](bias-study.md#experiment-2-qubit-scaling) | Stable 14–17% MSE reduction; **variance collapse up to 5,360×** | All $p < 10^{-46}$ |
+| [**Cross-Algorithm**](bias-study.md#experiment-3-cross-algorithm-validation) | Algorithm-agnostic: **VQE +14.8%, QAOA +48.8%, Grover +24.4%** | All $p < 10^{-17}$ |
+
+!!! success "The Anti-Decoherence Property"
+    Unlike most error mitigation techniques that degrade under heavy noise,
+    qgate's filter **improves** with noise — the noisier the environment, the
+    better the filter discriminates between the coherent subset and the
+    thermalized bulk.
+
+:material-arrow-right: **[Full bias study results, methodology, and reproduction steps →](bias-study.md)**
 
 ---
 
