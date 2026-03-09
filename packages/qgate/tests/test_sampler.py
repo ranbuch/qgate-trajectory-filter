@@ -14,6 +14,7 @@ import math
 
 import numpy as np
 import pytest
+from pydantic import ValidationError
 
 # ---------------------------------------------------------------------------
 # Skip entire module if Qiskit / runtime not installed
@@ -22,24 +23,25 @@ import pytest
 qiskit = pytest.importorskip("qiskit", reason="Qiskit required for sampler tests")
 qiskit_aer = pytest.importorskip("qiskit_aer", reason="Aer required for sampler tests")
 
-from qiskit import QuantumCircuit
-from qiskit.circuit import ClassicalRegister
+from qiskit import QuantumCircuit  # noqa: E402
+from qiskit.circuit import ClassicalRegister  # noqa: E402
 
 # Try importing runtime — tests that need it will skip individually
 try:
-    from qiskit_ibm_runtime import SamplerV2  # type: ignore[import-untyped]
+    from qiskit_ibm_runtime import (
+        SamplerV2 as _SamplerV2,  # noqa: F401  # type: ignore[import-untyped]
+    )
 
     HAS_RUNTIME = True
 except ImportError:
     HAS_RUNTIME = False
 
-from qgate.sampler import (
+from qgate.sampler import (  # noqa: E402
     QgateSampler,
     QgateSamplerResult,
     SamplerConfig,
     _SamplerGaltonThreshold,
 )
-
 
 # ═══════════════════════════════════════════════════════════════════════════
 # Tier 1 — SamplerConfig unit tests
@@ -73,27 +75,27 @@ class TestSamplerConfig:
 
     def test_frozen(self):
         cfg = SamplerConfig()
-        with pytest.raises(Exception):  # Pydantic ValidationError
+        with pytest.raises(ValidationError):
             cfg.probe_angle = 0.5  # type: ignore[misc]
 
     def test_probe_angle_bounds(self):
         # Too small
-        with pytest.raises(Exception):
+        with pytest.raises(ValidationError):
             SamplerConfig(probe_angle=0.0)
-        with pytest.raises(Exception):
+        with pytest.raises(ValidationError):
             SamplerConfig(probe_angle=-0.1)
         # Upper bound is pi
         cfg = SamplerConfig(probe_angle=math.pi)
         assert cfg.probe_angle == pytest.approx(math.pi)
 
     def test_target_acceptance_bounds(self):
-        with pytest.raises(Exception):
+        with pytest.raises(ValidationError):
             SamplerConfig(target_acceptance=0.0)
-        with pytest.raises(Exception):
+        with pytest.raises(ValidationError):
             SamplerConfig(target_acceptance=1.0)
 
     def test_oversample_factor_bounds(self):
-        with pytest.raises(Exception):
+        with pytest.raises(ValidationError):
             SamplerConfig(oversample_factor=0.5)  # below 1.0
         cfg = SamplerConfig(oversample_factor=1.0)
         assert cfg.oversample_factor == 1.0
@@ -270,7 +272,7 @@ class TestProbeInjection:
         qc = QuantumCircuit(3)
         qc.measure_all()
 
-        probed, meta = sampler._inject_probes(qc)
+        probed, _meta = sampler._inject_probes(qc)
         creg_names = [cr.name for cr in probed.cregs]
         assert "qgate_probe" in creg_names
 
@@ -439,7 +441,8 @@ class TestQgateSamplerResultTransparency:
         """Calling .result() twice returns the same object."""
 
         class _FakeResult:
-            metadata = {"fake": True}
+            def __init__(self) -> None:
+                self.metadata = {"fake": True}
 
             def __len__(self):
                 return 1

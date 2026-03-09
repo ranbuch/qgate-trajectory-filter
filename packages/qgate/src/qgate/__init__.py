@@ -63,6 +63,12 @@ from qgate.monitors import (
     score_fusion,
 )
 from qgate.run_logging import FilterResult, RunLogger, compute_run_id
+
+# ── QgateSampler OS layer ─────────────────────────────────────────────────
+# Transparent drop-in SamplerV2 replacement with autonomous probe injection
+# and Galton-filtered result reconstruction.
+# Patent pending — US App. Nos. 63/983,831 & 63/989,632, IL 326915.
+from qgate.sampler import QgateSampler, SamplerConfig
 from qgate.scoring import (
     fuse_scores,
     score_batch,
@@ -73,12 +79,6 @@ from qgate.threshold import (
     GaltonSnapshot,
     estimate_diffusion_width,
 )
-
-# ── QgateSampler OS layer ─────────────────────────────────────────────────
-# Transparent drop-in SamplerV2 replacement with autonomous probe injection
-# and Galton-filtered result reconstruction.
-# Patent pending — US App. Nos. 63/983,831 & 63/989,632, IL 326915.
-from qgate.sampler import QgateSampler, SamplerConfig
 
 __all__ = [
     "AdapterKind",

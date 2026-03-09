@@ -37,9 +37,9 @@ import logging
 import math
 import warnings
 from collections import deque
-from copy import deepcopy
+from collections.abc import Sequence
 from dataclasses import dataclass, field
-from typing import Any, Sequence
+from typing import Any
 
 import numpy as np
 
@@ -92,7 +92,11 @@ try:
 except ImportError:  # pragma: no cover — lightweight fallback
     BaseModel = object  # type: ignore[assignment,misc]
     ConfigDict = None  # type: ignore[assignment,misc]
-    Field = lambda **kw: kw.get("default")  # type: ignore[assignment]
+
+    def _field_fallback(**kw: Any) -> Any:  # type: ignore[misc]
+        return kw.get("default")
+
+    Field = _field_fallback  # type: ignore[assignment]
 
 
 class SamplerConfig(BaseModel):  # type: ignore[misc]
@@ -417,8 +421,8 @@ class QgateSampler:
 
             # --- Oversample to compensate for filtering ---
             if effective_shots is not None and self._config.oversample_factor > 1.0:
-                effective_shots = int(
-                    math.ceil(effective_shots * self._config.oversample_factor)
+                effective_shots = math.ceil(
+                    effective_shots * self._config.oversample_factor
                 )
 
             # --- Transpile for backend ---
@@ -460,7 +464,6 @@ class QgateSampler:
             (probed_circuit, metadata_dict)
         """
         n_system = circuit.num_qubits
-        system_qubits = list(range(n_system))
 
         # --- Build augmented circuit with ancilla register ---
         from qiskit.circuit import QuantumRegister
@@ -550,7 +553,6 @@ class QgateSampler:
             BitArray,
             PrimitiveResult,
             PubResult,
-            SamplerPubResult,
         )
         from qiskit.primitives.containers.data_bin import (  # type: ignore[import-untyped]
             DataBin,
@@ -560,7 +562,6 @@ class QgateSampler:
 
         for pub_idx, pub_result in enumerate(raw_result):
             meta = probe_metadata[pub_idx]
-            n_system = meta["n_system_qubits"]
             probe_creg_name = meta["probe_creg_name"]
 
             # --- Extract measurement data ---
