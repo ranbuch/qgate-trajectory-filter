@@ -37,9 +37,34 @@ the novel **Galton adaptive thresholding** method.
 
 ---
 
+## :material-trophy: IBM Hardware Results
+
+Validated on real IBM Quantum processors with up to **7.3× fidelity improvement**:
+
+| Algorithm | Backend | Metric | Standard | TSVF | Advantage |
+|---|---|---|---|---|---|
+| **Grover** (iter=4) | IBM Fez | Success probability | 0.0830 | **0.6105** | :material-fire: **7.3×** |
+| **QAOA** (p=1) | IBM Torino | Approximation ratio | 0.4268 | **0.8029** | :material-fire: **1.88×** |
+| **VQE** (L=3) | IBM Fez | Energy gap to ground | 2.398 | **1.291** | :material-fire: **1.86×** closer |
+| **QPE** (t=7) | IBM Fez | Phase fidelity | **0.1569** | 0.0076 | :material-close: N/A |
+| **Utility-Scale** (133Q) | IBM Torino | Cooling delta | −4.108 | **−4.188** | :material-fire: **Δ = −0.080** |
+
+!!! info "Why QPE doesn't benefit"
+    TSVF works for **amplitude-encoded** algorithms (Grover, QAOA, VQE) but not
+    for **phase-coherence-encoded** algorithms (QPE). See [Hardware Experiments](experiments/index.md)
+    for full analysis.
+
+!!! success "NEW: Utility-Scale Stress Test (IBM Torino, 133 Qubits)"
+    At 16,709 ISA gate depth ($37\times T_1$), `qgate` Galton filtering achieved
+    a negative cooling delta (**Δ = −0.080**), extracting correlated signal from
+    ~99% thermal noise across 133 physical qubits — with zero variational
+    optimization overhead. See [Utility-Scale Stress Test](experiments/utility-scale.md).
+
+---
+
 ## :material-new-box: QgateSampler — Drop-in SamplerV2 Middleware
 
-!!! tip "New in v0.6.0 — the fastest way to try qgate"
+!!! tip "New in v0.6.0 — the fastest way to get these results"
     **One `import` swap. Zero circuit changes. Measurable physics improvement.**
 
     Wrap any IBM backend with `QgateSampler` and every call is automatically
@@ -66,31 +91,6 @@ Validated on **IBM Fez** (95% Bell fidelity), **IBM Torino** (133Q utility-scale
 and **IBM Brisbane** (6.6% acceptance vs 0% raw post-selection).
 
 :material-arrow-right: **[Full QgateSampler documentation →](middleware/qgate-sampler.md)**
-
----
-
-## :material-trophy: IBM Hardware Results
-
-Validated on real IBM Quantum processors with up to **7.3× fidelity improvement**:
-
-| Algorithm | Backend | Metric | Standard | TSVF | Advantage |
-|---|---|---|---|---|---|
-| **Grover** (iter=4) | IBM Fez | Success probability | 0.0830 | **0.6105** | :material-fire: **7.3×** |
-| **QAOA** (p=1) | IBM Torino | Approximation ratio | 0.4268 | **0.8029** | :material-fire: **1.88×** |
-| **VQE** (L=3) | IBM Fez | Energy gap to ground | 2.398 | **1.291** | :material-fire: **1.86×** closer |
-| **QPE** (t=7) | IBM Fez | Phase fidelity | **0.1569** | 0.0076 | :material-close: N/A |
-| **Utility-Scale** (133Q) | IBM Torino | Cooling delta | −4.108 | **−4.188** | :material-fire: **Δ = −0.080** |
-
-!!! info "Why QPE doesn't benefit"
-    TSVF works for **amplitude-encoded** algorithms (Grover, QAOA, VQE) but not
-    for **phase-coherence-encoded** algorithms (QPE). See [Hardware Experiments](experiments/index.md)
-    for full analysis.
-
-!!! success "NEW: Utility-Scale Stress Test (IBM Torino, 133 Qubits)"
-    At 16,709 ISA gate depth ($37\times T_1$), `qgate` Galton filtering achieved
-    a negative cooling delta (**Δ = −0.080**), extracting correlated signal from
-    ~99% thermal noise across 133 physical qubits — with zero variational
-    optimization overhead. See [Utility-Scale Stress Test](experiments/utility-scale.md).
 
 ---
 
