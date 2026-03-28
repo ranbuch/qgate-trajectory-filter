@@ -1,6 +1,7 @@
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+# ── Build system DISABLED — do NOT publish this package to PyPI ───────────
+# [build-system]
+# requires = ["hatchling"]
+# build-backend = "hatchling.build"
 
 [project]
 name = "qgate"
@@ -72,14 +73,16 @@ cirq = "qgate.adapters.cirq_adapter:CirqAdapter"
 pennylane = "qgate.adapters.pennylane_adapter:PennyLaneAdapter"
 
 [project.urls]
-Homepage = "https://pypi.org/project/qgate/"
-Repository = "https://github.com/ranbuch/qgate-trajectory-filter"
-Documentation = "https://ranbuch.github.io/qgate-trajectory-filter"
-Changelog = "https://github.com/ranbuch/qgate-trajectory-filter/blob/main/packages/qgate/CHANGELOG.md"
-"Bug Tracker" = "https://github.com/ranbuch/qgate-trajectory-filter/issues"
+# URLs removed — this package must NOT be published publicly.
+# Homepage = "https://pypi.org/project/qgate/"
+# Repository = "https://github.com/ranbuch/qgate-trajectory-filter"
+# Documentation = "https://ranbuch.github.io/qgate-trajectory-filter"
+# Changelog = "https://github.com/ranbuch/qgate-trajectory-filter/blob/main/packages/qgate/CHANGELOG.md"
+# "Bug Tracker" = "https://github.com/ranbuch/qgate-trajectory-filter/issues"
 
-[tool.hatch.build.targets.wheel]
-packages = ["src/qgate"]
+# ── Hatch build DISABLED — do NOT build distributable wheels ──────────────
+# [tool.hatch.build.targets.wheel]
+# packages = ["src/qgate"]
 
 # ── Ruff ──────────────────────────────────────────────────────────────────
 [tool.ruff]
