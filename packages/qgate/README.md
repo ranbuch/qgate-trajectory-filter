@@ -250,7 +250,7 @@ full config JSON, acceptance probability, TTS, and a UTC timestamp.
 ```bash
 cd packages/qgate
 pip install -e ".[dev]"
-pytest -v tests/            # 376 tests, ~3 s
+pytest -v tests/            # 806 tests, ~10 s
 pytest --cov=qgate tests/   # with coverage
 ```
 

@@ -5,6 +5,60 @@ All notable changes to **qgate** will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.6.0] — 2026-03-20
+
+### Added
+
+- **TVS (Trajectory Viability Score)** module (`qgate.tvs`) — HF/LF
+  telemetry fusion with Kalman-style dynamic alpha and Stage-1 Galton
+  percentile filtering.  Four hardware modes: `level_1` (I/Q RBF),
+  `level_1_cluster` (K-Means + RBF), `level_2` (binary), `auto`
+  (autonomous routing).
+- **`adaptive_galton_schedule`** — sigmoid-based depth-aware rejection
+  percentile schedule.  Raises drop rate from 25 % (shallow) to 75 %
+  (deep) with knee at depth 300 (well past training boundary).
+  Configurable knee, steepness, and oversampling factor.
+  Patent pending — US 63/983,831 & 63/989,632, IL 326915.
+- **`compute_iq_snr`** — I/Q separability metric (inter-centroid
+  distance / pooled σ) used by autonomous pipeline routing.
+- **`normalise_hf_level1_cluster`** — K-Means clustering + per-cluster
+  RBF scoring for multi-modal I/Q readout distributions.
+- **Autonomous pipeline routing** — `process_telemetry_batch` now
+  auto-selects the optimal pipeline (Level-1/Level-1-cluster/Level-2)
+  based on dtype detection and SNR thresholding when no `force_mode`
+  is specified.
+- **`force_mode` keyword-only parameter** — replaces the positional
+  `mode` parameter for explicit pipeline selection.  `mode` is
+  deprecated and emits `DeprecationWarning`.
+- **`VALID_FORCE_MODES`** / **`VALID_MODES`** constants — public
+  enumeration of supported pipeline identifiers.
+- **TelemetryCompressor** — spatial pooling + Gini pruning for
+  utility-scale telemetry reduction.
+- **QgateTranspiler** — ML-aware circuit compiler with probe injection,
+  Uzdin unitary folding, and mitigation-mode-specific depth/shot
+  optimisation.
+- **QgateSampler** — transparent `SamplerV2` drop-in replacement with
+  autonomous probe injection and Galton-filtered result reconstruction.
+- **PulseMitigator** — Level-1 IQ-level drift prediction with active
+  cancellation.
+- **Algorithm TSVF adapters** — Grover, QAOA, VQE, QPE adapters for
+  TSVF-augmented algorithm execution.
+- **Full-stack benchmark T1–T10** (49 metrics) — including T7 depth-
+  scaling survival with adaptive Galton filtering (129–568× in-training,
+  1.2–3.2× extrapolation to d = 1000).
+- **806 unit tests** — all passing.
+
+### Changed
+
+- `process_telemetry_batch` signature: positional `mode` parameter
+  deprecated in favour of keyword-only `force_mode`.  Legacy
+  `mode='hybrid'` maps to auto-routing with a deprecation warning.
+
+### Deprecated
+
+- Positional `mode` parameter in `process_telemetry_batch` — use
+  `force_mode` instead.  Will be removed in 0.7.0.
+
 ## [0.5.0] — 2026-02-22
 
 ### Added

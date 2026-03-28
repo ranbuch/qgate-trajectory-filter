@@ -1,0 +1,58 @@
+{
+  "experiment": "two_stage_ml_mitigation_real_data",
+  "timestamp": "2026-03-13T09:00:43.108462+00:00",
+  "exact_energy": -24.89848442198773,
+  "raw_mean": -0.7385441911828083,
+  "raw_abs_err": 24.159940230804924,
+  "filt_mean": -0.18699628884006397,
+  "filt_abs_err": 24.711488133147668,
+  "models": {
+    "RandomForest": {
+      "ml_mean": -24.903466501484488,
+      "ml_abs_err": 0.004982079496755887,
+      "correction_mse": 0.0006859968204186218,
+      "correction_mae": 0.015484811333966522,
+      "mean_pred_correction": -24.716470212644428,
+      "mean_true_correction": -24.711488133147668
+    },
+    "GradientBoosting": {
+      "ml_mean": -24.913193819596117,
+      "ml_abs_err": 0.014709397608385189,
+      "correction_mse": 0.0011486309669648152,
+      "correction_mae": 0.02242860424813272,
+      "mean_pred_correction": -24.72619753075604,
+      "mean_true_correction": -24.711488133147668
+    },
+    "Ridge": {
+      "ml_mean": -24.89098711315531,
+      "ml_abs_err": 0.007497308832419947,
+      "correction_mse": 0.0006571221888935228,
+      "correction_mae": 0.020430176351472693,
+      "mean_pred_correction": -24.703990824315245,
+      "mean_true_correction": -24.711488133147668
+    }
+  },
+  "best_model": "RandomForest",
+  "improvement_pct": 99.97937875901529,
+  "config": {
+    "GALTON_KEEP_FRAC": 0.7,
+    "RF_N_ESTIMATORS": 300,
+    "RF_MAX_DEPTH": 10,
+    "GB_N_ESTIMATORS": 200,
+    "GB_MAX_DEPTH": 5,
+    "RIDGE_ALPHA": 1.0,
+    "SEED": 42,
+    "n_train": 189,
+    "n_test": 90,
+    "n_test_filtered": 62
+  },
+  "data_sources": {
+    "noise_sweep": "/Users/ranbuchnik/Dev/timehandshake-sim/results/noise_sweep_8q_15t_20260304_221252.json",
+    "cross_algo": "/Users/ranbuchnik/Dev/timehandshake-sim/results/cross_algo_8q_15t_20260306_174443.json",
+    "ibm_marrakesh": "/Users/ranbuchnik/Dev/timehandshake-sim/simulations/ibm_hardware/results.csv",
+    "ibm_fez_galton": "/Users/ranbuchnik/Dev/timehandshake-sim/simulations/ibm_hardware/galton_experiment/galton_results.csv",
+    "vqe_tsvf_fez": "/Users/ranbuchnik/Dev/timehandshake-sim/simulations/vqe_tsvf/results_20260302_080312",
+    "qaoa_tsvf_torino": "/Users/ranbuchnik/Dev/timehandshake-sim/simulations/qaoa_tsvf/results_20260302_074221"
+  },
+  "patent_ref": "US 63/983,831 & 63/989,632 | IL 326915 | CIP addendum"
+}

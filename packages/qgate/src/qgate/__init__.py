@@ -64,6 +64,72 @@ from qgate.monitors import (
 )
 from qgate.run_logging import FilterResult, RunLogger, compute_run_id
 
+# ── TelemetryMitigator — two-stage ML-augmented error mitigation ──────────
+# Stage 1 Galton trajectory filtering + Stage 2 ML regression correction.
+# Patent pending — US App. Nos. 63/983,831 & 63/989,632, IL 326915.
+# CIP addendum — ML-augmented TSVF trajectory mitigation.
+from qgate.mitigation import (
+    CalibrationResult,
+    MitigationResult,
+    MitigatorConfig,
+    TelemetryMitigator,
+)
+
+# ── PulseMitigator — firmware-level ML-driven TLS drift cancellation ──────
+# Operates on Level-1 (analog) IQ telemetry, not Level-2 (binary) data.
+# Predicts TLS drift and injects inverse frequency shift into drive pulses.
+# Patent pending — US App. Nos. 63/983,831 & 63/989,632, IL 326915.
+# CIP addendum — Pulse-level ML-augmented TSVF firmware mitigation.
+from qgate.pulse_mitigator import (
+    ActiveCancellationResult,
+    DriftPrediction,
+    PulseCalibrationResult,
+    PulseMitigator,
+    PulseMitigatorConfig,
+    SimulatedPulseSchedule,
+    extract_iq_features,
+)
+
+# ── QgateTranspiler — ML-aware quantum circuit compiler ───────────────────
+# Auto-configures circuit padding and shot oversampling based on active
+# mitigation mode.  Disables aggressive chaotic Hamiltonian mixing and
+# reduces shot oversampling when ML mitigators replace legacy binary
+# filtering, cutting QPU cost by up to 8×.
+# Patent pending — US App. Nos. 63/983,831 & 63/989,632, IL 326915.
+# CIP addendum — ML-aware transpilation and shot optimisation.
+from qgate.transpiler import (
+    CompilationResult,
+    MitigationMode,
+    QgateTranspiler,
+    QgateTranspilerConfig,
+    apply_uzdin_unitary_folding,
+    validate_noise_scale_factor,
+)
+
+# ── TelemetryCompressor — two-stage dimensionality reduction ──────────────
+# Spatial topological pooling + tree-based Gini pruning for utility-scale
+# (50–156+ qubit) telemetry compression.  Reduces high-dimensional IQ /
+# telemetry vectors to dense latent vectors for Stage-2 ML regressors.
+# Patent pending — US App. Nos. 63/983,831 & 63/989,632, IL 326915.
+# CIP addendum — telemetry compression for utility-scale ML mitigation.
+from qgate.compressor import TelemetryCompressor
+
+# ── TVS — Trajectory Viability Score: HF/LF fusion + Stage-1 filtering ───
+# Fuses Level-1 (I/Q soft-decision) or Level-2 (binary hard-decision) HF
+# telemetry with LF drift scores via Kalman-style dynamic alpha weighting.
+# Normalised fusion scores feed into Galton percentile-based outlier
+# rejection (Stage 1), producing a surviving-shot mask + ML features for
+# Stage-2 regressors.  Fully vectorised NumPy — no Python for-loops.
+# Patent pending — US App. Nos. 63/983,831 & 63/989,632, IL 326915.
+# CIP addendum — Level-1 I/Q trajectory viability scoring.
+from qgate.tvs import (
+    VALID_FORCE_MODES,
+    adaptive_galton_schedule,
+    compute_iq_snr,
+    normalise_hf_level1_cluster,
+    process_telemetry_batch,
+)
+
 # ── QgateSampler OS layer ─────────────────────────────────────────────────
 # Transparent drop-in SamplerV2 replacement with autonomous probe injection
 # and Galton-filtered result reconstruction.
@@ -81,12 +147,20 @@ from qgate.threshold import (
 )
 
 __all__ = [
+    # PulseMitigator — firmware-level ML drift cancellation
+    "ActiveCancellationResult",
     "AdapterKind",
     # Primary API
     "BaseAdapter",
+    # Calibration / Mitigation results
+    "CalibrationResult",
+    # QgateTranspiler — ML-aware circuit compiler
+    "CompilationResult",
     # Legacy (backward compat)
     "ConditioningStats",
     "ConditioningVariant",
+    # PulseMitigator result
+    "DriftPrediction",
     "DynamicThresholdConfig",
     "FilterResult",
     "FusionConfig",
@@ -96,19 +170,45 @@ __all__ = [
     "GateConfig",
     # Grover/TSVF adapter
     "GroverTSVFAdapter",
+    # TelemetryMitigator — two-stage ML error mitigation
+    "MitigationResult",
+    # Mitigation mode (transpiler)
+    "MitigationMode",
+    "MitigatorConfig",
     "MultiRateMonitor",
     "ParityOutcome",
     "ProbeConfig",
+    # PulseMitigator — pulse-level IQ telemetry + ML
+    "PulseCalibrationResult",
+    "PulseMitigator",
+    "PulseMitigatorConfig",
+    # TVS — Trajectory Viability Score (HF/LF fusion + Galton filter)
+    "VALID_FORCE_MODES",
+    "adaptive_galton_schedule",
+    "compute_iq_snr",
+    "normalise_hf_level1_cluster",
+    "process_telemetry_batch",
     # QAOA/TSVF adapter
     "QAOATSVFAdapter",
     # QPE/TSVF adapter
     "QPETSVFAdapter",
     # QgateSampler OS
     "QgateSampler",
+    # QgateTranspiler — ML-aware compiler
+    "QgateTranspiler",
+    "QgateTranspilerConfig",
     "RunLogger",
     "SamplerConfig",
+    # Simulated pulse schedule (Qiskit 2.x fallback)
+    "SimulatedPulseSchedule",
+    # TelemetryMitigator
+    "TelemetryMitigator",
+    # TelemetryCompressor — utility-scale telemetry compression
+    "TelemetryCompressor",
     "ThresholdMode",
     "TrajectoryFilter",
+    # Uzdin unitary folding — noise amplification utilities
+    "apply_uzdin_unitary_folding",
     # VQE/TSVF adapter
     "VQETSVFAdapter",
     "apply_rule_to_batch",
@@ -118,10 +218,14 @@ __all__ = [
     "decide_hierarchical",
     "decide_score_fusion",
     "estimate_diffusion_width",
+    # IQ feature extraction (public helper)
+    "extract_iq_features",
     "fuse_scores",
     "list_adapters",
     "load_adapter",
     "score_batch",
     "score_fusion",
     "score_outcome",
+    # Uzdin scale-factor validator
+    "validate_noise_scale_factor",
 ]

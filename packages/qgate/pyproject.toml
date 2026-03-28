@@ -46,7 +46,8 @@ cirq = ["cirq-core>=1.3"]
 pennylane = ["pennylane>=0.33"]
 plotting = ["matplotlib>=3.7"]
 parquet = ["pandas>=1.5", "pyarrow>=14.0"]
-all = ["qgate[csv,qutip,qiskit,cirq,pennylane,plotting,parquet]"]
+ml = ["scikit-learn>=1.3"]
+all = ["qgate[csv,qutip,qiskit,cirq,pennylane,plotting,parquet,ml]"]
 dev = [
     "qgate[all]",
     "pytest>=7.0",
@@ -98,6 +99,11 @@ ignore = [
 # Pydantic/typer evaluate field annotations at runtime — must use typing.Optional/List on 3.9
 "src/qgate/config.py" = ["UP006", "UP007", "UP035", "UP045"]
 "src/qgate/cli.py" = ["UP007", "UP035", "UP045"]
+"src/qgate/mitigation.py" = ["UP006", "UP007", "UP035", "UP045"]
+"src/qgate/pulse_mitigator.py" = ["UP006", "UP007", "UP035", "UP045"]
+"src/qgate/transpiler.py" = ["UP006", "UP007", "UP035", "UP045"]
+"src/qgate/compressor.py" = ["UP006", "UP007", "UP035", "UP045"]
+"src/qgate/tvs.py" = ["UP006", "UP007", "UP035", "UP045"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["qgate"]

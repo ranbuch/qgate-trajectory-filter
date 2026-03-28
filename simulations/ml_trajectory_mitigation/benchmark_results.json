@@ -1,0 +1,714 @@
+{
+  "benchmark": "qgate_full_stack_validation",
+  "timestamp": "20260320_222403",
+  "elapsed_seconds": 12.070406913757324,
+  "n_benchmarks": 49,
+  "metrics": [
+    {
+      "tier": "T1",
+      "name": "TrajectoryFilter real IBM",
+      "raw_error": 0.878435,
+      "mitigated_error": 0.878435,
+      "improvement_factor": 1.0,
+      "extra": {
+        "n_runs": 120,
+        "configs_tested": 6,
+        "real_mean_acceptance": 0.12156499999999999
+      }
+    },
+    {
+      "tier": "T2",
+      "name": "TelemetryMitigator LONO-CV",
+      "raw_error": 24.035405217884197,
+      "mitigated_error": 0.0521310282517425,
+      "improvement_factor": 461.0575702020764,
+      "extra": {
+        "n_noise_levels": 6,
+        "n_records": 270
+      }
+    },
+    {
+      "tier": "T2",
+      "name": "TelemetryMitigator random_forest",
+      "raw_error": 24.056676175720504,
+      "mitigated_error": 0.01621922132605557,
+      "improvement_factor": 1483.2201677323656,
+      "extra": {
+        "model": "random_forest",
+        "train_mae": 0.009626306035131841
+      }
+    },
+    {
+      "tier": "T2",
+      "name": "TelemetryMitigator gradient_boosting",
+      "raw_error": 24.056676175720504,
+      "mitigated_error": 0.009487421932126634,
+      "improvement_factor": 2535.6389067359764,
+      "extra": {
+        "model": "gradient_boosting",
+        "train_mae": 0.00039817000428268693
+      }
+    },
+    {
+      "tier": "T2",
+      "name": "TelemetryMitigator ridge",
+      "raw_error": 24.056676175720504,
+      "mitigated_error": 0.0101523734563879,
+      "improvement_factor": 2369.5617856319086,
+      "extra": {
+        "model": "ridge",
+        "train_mae": 0.011656685231414122
+      }
+    },
+    {
+      "tier": "T3",
+      "name": "CrossAlgo \u2192 vqe",
+      "raw_error": 24.12424220176759,
+      "mitigated_error": 0.013059074235022826,
+      "improvement_factor": 1847.3164152072395,
+      "extra": {
+        "algorithm": "vqe",
+        "n_test": 45
+      }
+    },
+    {
+      "tier": "T3",
+      "name": "CrossAlgo \u2192 qaoa",
+      "raw_error": 25.50879537141304,
+      "mitigated_error": 0.07787360886374996,
+      "improvement_factor": 327.5666267893659,
+      "extra": {
+        "algorithm": "qaoa",
+        "n_test": 45
+      }
+    },
+    {
+      "tier": "T3",
+      "name": "CrossAlgo \u2192 grover",
+      "raw_error": 25.197149066474676,
+      "mitigated_error": 0.4406564670065386,
+      "improvement_factor": 57.180935611006916,
+      "extra": {
+        "algorithm": "grover",
+        "n_test": 45
+      }
+    },
+    {
+      "tier": "T4",
+      "name": "PulseMitigator single-qubit",
+      "raw_error": 20822.523130830792,
+      "mitigated_error": 13117.832352995338,
+      "improvement_factor": 1.587344812047103,
+      "extra": {
+        "n_train": 350,
+        "n_test": 150,
+        "noise_std": 0.022789222778713626
+      }
+    },
+    {
+      "tier": "T4",
+      "name": "PulseMitigator ridge",
+      "raw_error": 28594.033041101222,
+      "mitigated_error": 15508.439166091053,
+      "improvement_factor": 1.8437724605853054,
+      "extra": {
+        "model": "ridge"
+      }
+    },
+    {
+      "tier": "T4",
+      "name": "PulseMitigator random_forest",
+      "raw_error": 28594.033041101222,
+      "mitigated_error": 9865.839053798276,
+      "improvement_factor": 2.898286996694187,
+      "extra": {
+        "model": "random_forest"
+      }
+    },
+    {
+      "tier": "T4",
+      "name": "PulseMitigator gradient_boosting",
+      "raw_error": 28594.033041101222,
+      "mitigated_error": 9818.253402444068,
+      "improvement_factor": 2.9123339833522,
+      "extra": {
+        "model": "gradient_boosting"
+      }
+    },
+    {
+      "tier": "T5",
+      "name": "Full-stack pipeline",
+      "raw_error": 24.067336177413427,
+      "mitigated_error": 0.011303417588742957,
+      "improvement_factor": 2129.208797999467,
+      "extra": {
+        "stage_0_acceptance": 1.0,
+        "stage_12_improvement": 1787.0676000605408,
+        "stage_3_improvement": 1.1914539762946492
+      }
+    },
+    {
+      "tier": "T6",
+      "name": "Transpiler 4q ml_extrapolation",
+      "raw_error": 942080.0,
+      "mitigated_error": 88488.0,
+      "improvement_factor": 10.646415333152518,
+      "extra": {
+        "n_qubits": 4,
+        "mode": "ml_extrapolation",
+        "shot_reduction": 8.331977217249797,
+        "depth_reduction": 1.2777777777777777,
+        "gate_reduction": 1.6071428571428572,
+        "legacy_shots": 40960,
+        "ml_shots": 4916,
+        "legacy_depth": 23,
+        "ml_depth": 18,
+        "legacy_gates": 45,
+        "ml_gates": 28
+      }
+    },
+    {
+      "tier": "T6",
+      "name": "Transpiler 4q pulse_active",
+      "raw_error": 942080.0,
+      "mitigated_error": 88488.0,
+      "improvement_factor": 10.646415333152518,
+      "extra": {
+        "n_qubits": 4,
+        "mode": "pulse_active",
+        "shot_reduction": 8.331977217249797,
+        "depth_reduction": 1.2777777777777777,
+        "gate_reduction": 1.6071428571428572,
+        "legacy_shots": 40960,
+        "ml_shots": 4916,
+        "legacy_depth": 23,
+        "ml_depth": 18,
+        "legacy_gates": 45,
+        "ml_gates": 28
+      }
+    },
+    {
+      "tier": "T6",
+      "name": "Transpiler 8q ml_extrapolation",
+      "raw_error": 1761280.0,
+      "mitigated_error": 186808.0,
+      "improvement_factor": 9.42829000899319,
+      "extra": {
+        "n_qubits": 8,
+        "mode": "ml_extrapolation",
+        "shot_reduction": 8.331977217249797,
+        "depth_reduction": 1.131578947368421,
+        "gate_reduction": 1.5833333333333333,
+        "legacy_shots": 40960,
+        "ml_shots": 4916,
+        "legacy_depth": 43,
+        "ml_depth": 38,
+        "legacy_gates": 95,
+        "ml_gates": 60
+      }
+    },
+    {
+      "tier": "T6",
+      "name": "Transpiler 8q pulse_active",
+      "raw_error": 1761280.0,
+      "mitigated_error": 186808.0,
+      "improvement_factor": 9.42829000899319,
+      "extra": {
+        "n_qubits": 8,
+        "mode": "pulse_active",
+        "shot_reduction": 8.331977217249797,
+        "depth_reduction": 1.131578947368421,
+        "gate_reduction": 1.5833333333333333,
+        "legacy_shots": 40960,
+        "ml_shots": 4916,
+        "legacy_depth": 43,
+        "ml_depth": 38,
+        "legacy_gates": 95,
+        "ml_gates": 60
+      }
+    },
+    {
+      "tier": "T6",
+      "name": "Transpiler 16q ml_extrapolation",
+      "raw_error": 3399680.0,
+      "mitigated_error": 383448.0,
+      "improvement_factor": 8.866078320919655,
+      "extra": {
+        "n_qubits": 16,
+        "mode": "ml_extrapolation",
+        "shot_reduction": 8.331977217249797,
+        "depth_reduction": 1.064102564102564,
+        "gate_reduction": 1.5725806451612903,
+        "legacy_shots": 40960,
+        "ml_shots": 4916,
+        "legacy_depth": 83,
+        "ml_depth": 78,
+        "legacy_gates": 195,
+        "ml_gates": 124
+      }
+    },
+    {
+      "tier": "T6",
+      "name": "Transpiler 16q pulse_active",
+      "raw_error": 3399680.0,
+      "mitigated_error": 383448.0,
+      "improvement_factor": 8.866078320919655,
+      "extra": {
+        "n_qubits": 16,
+        "mode": "pulse_active",
+        "shot_reduction": 8.331977217249797,
+        "depth_reduction": 1.064102564102564,
+        "gate_reduction": 1.5725806451612903,
+        "legacy_shots": 40960,
+        "ml_shots": 4916,
+        "legacy_depth": 83,
+        "ml_depth": 78,
+        "legacy_gates": 195,
+        "ml_gates": 124
+      }
+    },
+    {
+      "tier": "T6",
+      "name": "Transpiler 32q ml_extrapolation",
+      "raw_error": 6676480.0,
+      "mitigated_error": 776728.0,
+      "improvement_factor": 8.595647382352638,
+      "extra": {
+        "n_qubits": 32,
+        "mode": "ml_extrapolation",
+        "shot_reduction": 8.331977217249797,
+        "depth_reduction": 1.0316455696202531,
+        "gate_reduction": 1.5674603174603174,
+        "legacy_shots": 40960,
+        "ml_shots": 4916,
+        "legacy_depth": 163,
+        "ml_depth": 158,
+        "legacy_gates": 395,
+        "ml_gates": 252
+      }
+    },
+    {
+      "tier": "T6",
+      "name": "Transpiler 32q pulse_active",
+      "raw_error": 6676480.0,
+      "mitigated_error": 776728.0,
+      "improvement_factor": 8.595647382352638,
+      "extra": {
+        "n_qubits": 32,
+        "mode": "pulse_active",
+        "shot_reduction": 8.331977217249797,
+        "depth_reduction": 1.0316455696202531,
+        "gate_reduction": 1.5674603174603174,
+        "legacy_shots": 40960,
+        "ml_shots": 4916,
+        "legacy_depth": 163,
+        "ml_depth": 158,
+        "legacy_gates": 395,
+        "ml_gates": 252
+      }
+    },
+    {
+      "tier": "T7",
+      "name": "Depth 10",
+      "raw_error": 0.2820647543596039,
+      "mitigated_error": 0.0019271818909086993,
+      "improvement_factor": 146.36125198675748,
+      "extra": {
+        "depth": 10,
+        "effective_noise": 0.009955119790251765,
+        "in_training_regime": true,
+        "n_trials_raw": 41,
+        "n_trials_filtered": 29,
+        "galton_drop_pct": 27.607678153920887,
+        "oversample_factor": 1.381361965604867
+      }
+    },
+    {
+      "tier": "T7",
+      "name": "Depth 25",
+      "raw_error": 0.6035914505914421,
+      "mitigated_error": 0.00048549295669028756,
+      "improvement_factor": 1243.25480374887,
+      "extra": {
+        "depth": 25,
+        "effective_noise": 0.024702287402953438,
+        "in_training_regime": true,
+        "n_trials_raw": 41,
+        "n_trials_filtered": 29,
+        "galton_drop_pct": 28.00433250870038,
+        "oversample_factor": 1.3889724685458966
+      }
+    },
+    {
+      "tier": "T7",
+      "name": "Depth 50",
+      "raw_error": 0.8706462962253747,
+      "mitigated_error": 0.0010332170016098005,
+      "improvement_factor": 842.6557972515618,
+      "extra": {
+        "depth": 50,
+        "effective_noise": 0.04879437180296864,
+        "in_training_regime": true,
+        "n_trials_raw": 42,
+        "n_trials_filtered": 29,
+        "galton_drop_pct": 28.792909001062178,
+        "oversample_factor": 1.4043545185898927
+      }
+    },
+    {
+      "tier": "T7",
+      "name": "Depth 100",
+      "raw_error": 1.950795355991022,
+      "mitigated_error": 0.0006391133059458774,
+      "improvement_factor": 3052.3466462709243,
+      "extra": {
+        "depth": 100,
+        "effective_noise": 0.09520785288629108,
+        "in_training_regime": true,
+        "n_trials_raw": 43,
+        "n_trials_filtered": 29,
+        "galton_drop_pct": 30.960146101105877,
+        "oversample_factor": 1.4484387546133233
+      }
+    },
+    {
+      "tier": "T7",
+      "name": "Depth 200",
+      "raw_error": 4.0889614105272765,
+      "mitigated_error": 1.372952541663187,
+      "improvement_factor": 2.9782248740906456,
+      "extra": {
+        "depth": 200,
+        "effective_noise": 0.1813511705213644,
+        "in_training_regime": false,
+        "n_trials_raw": 48,
+        "n_trials_filtered": 29,
+        "galton_drop_pct": 38.44707106849975,
+        "oversample_factor": 1.6246180601947624
+      }
+    },
+    {
+      "tier": "T7",
+      "name": "Depth 500",
+      "raw_error": 8.25414045807348,
+      "mitigated_error": 5.53813158920939,
+      "improvement_factor": 1.4904197065588,
+      "extra": {
+        "depth": 500,
+        "effective_noise": 0.3936210551388153,
+        "in_training_regime": false,
+        "n_trials_raw": 96,
+        "n_trials_filtered": 29,
+        "galton_drop_pct": 69.03985389889411,
+        "oversample_factor": 3.229958917940249
+      }
+    },
+    {
+      "tier": "T7",
+      "name": "Depth 1000",
+      "raw_error": 13.472124467553948,
+      "mitigated_error": 10.756115598689858,
+      "improvement_factor": 1.25250833760051,
+      "extra": {
+        "depth": 1000,
+        "effective_noise": 0.6323045752290363,
+        "in_training_regime": false,
+        "n_trials_raw": 119,
+        "n_trials_filtered": 29,
+        "galton_drop_pct": 74.95444744027998,
+        "oversample_factor": 3.9927248465193323
+      }
+    },
+    {
+      "tier": "T8",
+      "name": "Shot budget 30",
+      "raw_error": 23.916179962244833,
+      "mitigated_error": 0.11657140268476146,
+      "improvement_factor": 205.1633540596593,
+      "extra": {
+        "shot_budget": 30,
+        "n_noise_levels": 6
+      }
+    },
+    {
+      "tier": "T8",
+      "name": "Shot budget 60",
+      "raw_error": 23.98945139854985,
+      "mitigated_error": 0.05978533589190782,
+      "improvement_factor": 401.25979122912173,
+      "extra": {
+        "shot_budget": 60,
+        "n_noise_levels": 6
+      }
+    },
+    {
+      "tier": "T8",
+      "name": "Shot budget 90",
+      "raw_error": 23.908210167442657,
+      "mitigated_error": 0.07948660489516154,
+      "improvement_factor": 300.7828828388918,
+      "extra": {
+        "shot_budget": 90,
+        "n_noise_levels": 6
+      }
+    },
+    {
+      "tier": "T8",
+      "name": "Shot budget 120",
+      "raw_error": 23.981961599078478,
+      "mitigated_error": 0.05567679576338227,
+      "improvement_factor": 430.7353049014905,
+      "extra": {
+        "shot_budget": 120,
+        "n_noise_levels": 6
+      }
+    },
+    {
+      "tier": "T8",
+      "name": "Shot budget 180",
+      "raw_error": 23.987591481160123,
+      "mitigated_error": 0.06042730552602364,
+      "improvement_factor": 396.9660945883086,
+      "extra": {
+        "shot_budget": 180,
+        "n_noise_levels": 6
+      }
+    },
+    {
+      "tier": "T8",
+      "name": "Shot budget 270",
+      "raw_error": 24.035405217884193,
+      "mitigated_error": 0.030786682712231204,
+      "improvement_factor": 780.7078613356156,
+      "extra": {
+        "shot_budget": 270,
+        "n_noise_levels": 6
+      }
+    },
+    {
+      "tier": "T9",
+      "name": "Noise 1e-04",
+      "raw_error": 23.90437409267948,
+      "mitigated_error": 0.0800960125166533,
+      "improvement_factor": 298.4464936716963,
+      "extra": {
+        "noise_level": 0.0001,
+        "regime": "low",
+        "n_test": 45
+      }
+    },
+    {
+      "tier": "T9",
+      "name": "Noise 5e-04",
+      "raw_error": 24.04616228883285,
+      "mitigated_error": 0.06356650230053858,
+      "improvement_factor": 378.2835521631196,
+      "extra": {
+        "noise_level": 0.0005,
+        "regime": "low",
+        "n_test": 45
+      }
+    },
+    {
+      "tier": "T9",
+      "name": "Noise 1e-03",
+      "raw_error": 24.195638259842262,
+      "mitigated_error": 0.013376709214368768,
+      "improvement_factor": 1808.7885347655013,
+      "extra": {
+        "noise_level": 0.001,
+        "regime": "low",
+        "n_test": 45
+      }
+    },
+    {
+      "tier": "T9",
+      "name": "Noise 5e-03",
+      "raw_error": 24.056676175720504,
+      "mitigated_error": 0.009487421932126634,
+      "improvement_factor": 2535.6389067359764,
+      "extra": {
+        "noise_level": 0.005,
+        "regime": "medium",
+        "n_test": 45
+      }
+    },
+    {
+      "tier": "T9",
+      "name": "Noise 1e-02",
+      "raw_error": 24.02178757815884,
+      "mitigated_error": 0.004421104696263711,
+      "improvement_factor": 5433.435584201326,
+      "extra": {
+        "noise_level": 0.01,
+        "regime": "medium",
+        "n_test": 45
+      }
+    },
+    {
+      "tier": "T9",
+      "name": "Noise 5e-02",
+      "raw_error": 23.98779291207126,
+      "mitigated_error": 0.013825401043420903,
+      "improvement_factor": 1735.0522300751873,
+      "extra": {
+        "noise_level": 0.05,
+        "regime": "high",
+        "n_test": 45
+      }
+    },
+    {
+      "tier": "T10",
+      "name": "No TVS (low)",
+      "raw_error": 0.48048318353843433,
+      "mitigated_error": 0.002598751555642133,
+      "improvement_factor": 1.0,
+      "extra": {
+        "regime": "low",
+        "mode": "none",
+        "p_err": 0.02,
+        "sigma_iq": 0.05,
+        "survival_pct": 100.0,
+        "tts": 0.002598751555642133,
+        "tts_improvement": 1.0,
+        "n_shots": 5000
+      }
+    },
+    {
+      "tier": "T10",
+      "name": "TVS Level-2 (low)",
+      "raw_error": 0.48048318353843433,
+      "mitigated_error": 0.000832595533069654,
+      "improvement_factor": 3.121265311214112,
+      "extra": {
+        "regime": "low",
+        "mode": "level_2",
+        "p_err": 0.02,
+        "sigma_iq": 0.05,
+        "survival_pct": 75.0,
+        "tts": 0.0011101273774262051,
+        "tts_improvement": 2.340948983410584,
+        "n_shots": 5000
+      }
+    },
+    {
+      "tier": "T10",
+      "name": "TVS Level-1 (low)",
+      "raw_error": 0.48048318353843433,
+      "mitigated_error": 0.0008741866628829466,
+      "improvement_factor": 2.972765046622663,
+      "extra": {
+        "regime": "low",
+        "mode": "level_1",
+        "p_err": 0.02,
+        "sigma_iq": 0.05,
+        "survival_pct": 75.0,
+        "tts": 0.001165582217177262,
+        "tts_improvement": 2.2295737849669974,
+        "n_shots": 5000
+      }
+    },
+    {
+      "tier": "T10",
+      "name": "No TVS (medium)",
+      "raw_error": 0.8061251614527222,
+      "mitigated_error": 0.004873468552420402,
+      "improvement_factor": 1.0,
+      "extra": {
+        "regime": "medium",
+        "mode": "none",
+        "p_err": 0.1,
+        "sigma_iq": 0.15,
+        "survival_pct": 100.0,
+        "tts": 0.004873468552420402,
+        "tts_improvement": 1.0,
+        "n_shots": 5000
+      }
+    },
+    {
+      "tier": "T10",
+      "name": "TVS Level-2 (medium)",
+      "raw_error": 0.8061251614527222,
+      "mitigated_error": 0.001097323693570932,
+      "improvement_factor": 4.441231498939995,
+      "extra": {
+        "regime": "medium",
+        "mode": "level_2",
+        "p_err": 0.1,
+        "sigma_iq": 0.15,
+        "survival_pct": 75.0,
+        "tts": 0.0014630982580945758,
+        "tts_improvement": 3.3309236242049964,
+        "n_shots": 5000
+      }
+    },
+    {
+      "tier": "T10",
+      "name": "TVS Level-1 (medium)",
+      "raw_error": 0.8061251614527222,
+      "mitigated_error": 0.0023898526626134043,
+      "improvement_factor": 2.039233894482457,
+      "extra": {
+        "regime": "medium",
+        "mode": "level_1",
+        "p_err": 0.1,
+        "sigma_iq": 0.15,
+        "survival_pct": 75.0,
+        "tts": 0.003186470216817872,
+        "tts_improvement": 1.529425420861843,
+        "n_shots": 5000
+      }
+    },
+    {
+      "tier": "T10",
+      "name": "No TVS (high)",
+      "raw_error": 1.6215842358521422,
+      "mitigated_error": 0.0066038735178438005,
+      "improvement_factor": 1.0,
+      "extra": {
+        "regime": "high",
+        "mode": "none",
+        "p_err": 0.25,
+        "sigma_iq": 0.35,
+        "survival_pct": 100.0,
+        "tts": 0.0066038735178438005,
+        "tts_improvement": 1.0,
+        "n_shots": 5000
+      }
+    },
+    {
+      "tier": "T10",
+      "name": "TVS Level-2 (high)",
+      "raw_error": 1.6215842358521422,
+      "mitigated_error": 0.0017609457321326725,
+      "improvement_factor": 3.7501857083613146,
+      "extra": {
+        "regime": "high",
+        "mode": "level_2",
+        "p_err": 0.25,
+        "sigma_iq": 0.35,
+        "survival_pct": 75.0,
+        "tts": 0.002347927642843563,
+        "tts_improvement": 2.8126392812709864,
+        "n_shots": 5000
+      }
+    },
+    {
+      "tier": "T10",
+      "name": "TVS Level-1 (high)",
+      "raw_error": 1.6215842358521422,
+      "mitigated_error": 0.006956675539816035,
+      "improvement_factor": 0.9492858305733828,
+      "extra": {
+        "regime": "high",
+        "mode": "level_1",
+        "p_err": 0.25,
+        "sigma_iq": 0.35,
+        "survival_pct": 75.0,
+        "tts": 0.00927556738642138,
+        "tts_improvement": 0.7119643729300371,
+        "n_shots": 5000
+      }
+    }
+  ]
+}

@@ -25,7 +25,7 @@ pip install -e "packages/qgate[dev]"
 
 ```bash
 cd packages/qgate
-pytest -v tests/             # 376 tests, ~3 s
+pytest -v tests/             # 806 tests, ~10 s
 pytest --cov=qgate tests/    # with coverage
 ```
 
