@@ -25,7 +25,7 @@ faq:
 [![PyPI](https://img.shields.io/pypi/v/qgate)](https://pypi.org/project/qgate/)
 [![Python](https://img.shields.io/pypi/pyversions/qgate)](https://pypi.org/project/qgate/)
 [![License](https://img.shields.io/badge/license-QGATE%20SAE%20v1.2-blue)](license.md)
-[![Tests](https://img.shields.io/badge/tests-406%20passing-brightgreen)]()
+[![Tests](https://img.shields.io/badge/tests-806%20passing-brightgreen)]()
 
 **Hardware-agnostic quantum error suppression middleware for NISQ devices.**
 
@@ -125,6 +125,12 @@ Systematic bias study: **15 independent trials × 100,000 shots**, IBM Heron-cla
 
 - :material-swap-horizontal: **QgateSampler** — :material-new-box: Transparent SamplerV2 drop-in: wrap any backend, get filtered results. [Try it →](middleware/qgate-sampler.md)
 - :dart: **TrajectoryFilter** — Main API class that orchestrates build → execute → filter
+- :material-brain: **TelemetryMitigator** — :material-new-box: Two-stage ML error mitigation: Galton filtering + regression. [Docs →](concepts/ml-mitigation.md)
+- :material-pulse: **PulseMitigator** — :material-new-box: Firmware-level IQ drift prediction + active cancellation. [Docs →](concepts/ml-mitigation.md)
+- :material-signal: **TVS (Trajectory Viability Score)** — :material-new-box: Level-1/Level-2 HF + LF telemetry fusion with dynamic Kalman-style alpha and Galton outlier rejection. [Docs →](concepts/tvs.md)
+- :material-compress: **TelemetryCompressor** — :material-new-box: Spatial pooling + Gini pruning for utility-scale (50+ qubit) telemetry. [Docs →](concepts/ml-mitigation.md)
+- :material-cog-transfer: **QgateTranspiler** — :material-new-box: ML-aware circuit compiler with auto-tuned probe injection. [Docs →](concepts/transpiler.md)
+- :material-shield-check: **Uzdin Folding** — :material-new-box: Validated ZNE noise amplification utilities (odd-integer enforcement). [Docs →](concepts/uzdin-folding.md)
 - :electric_plug: **Adapter pattern** — Pluggable backends (Qiskit, Cirq, PennyLane) + algorithm-specific TSVF adapters
 - :bar_chart: **Score fusion** — α-weighted LF/HF multi-rate fusion scoring
 - :chart_with_upwards_trend: **Dynamic thresholding** — Rolling z-score gating that adapts to hardware drift
@@ -183,6 +189,39 @@ Systematic bias study: **15 independent trials × 100,000 shots**, IBM Heron-cla
 - :material-test-tube: **406 tests** passing across Python 3.9–3.13
 - :material-speedometer: **NumPy vectorisation** — Batch operations for scoring and filtering
 - :material-lock-check: **Frozen config** — All Pydantic models are immutable
+
+### CIP Addendum — ML-Augmented Mitigation
+
+!!! warning "Patent Pending — Confidential"
+    CIP addendum to US App. Nos. 63/983,831 & 63/989,632 | IL App. No. 326915.
+    **DO NOT PUSH. DO NOT PUBLISH.**
+
+- :material-brain: **TelemetryMitigator** — Two-stage ML error mitigation replacing binary
+  accept/reject with continuous correction. Galton filter (Stage 1) retains ~70% of
+  shots; ML regression (Stage 2) predicts the residual error. Up to 2536× improvement
+  over baseline. [Docs →](concepts/ml-mitigation.md)
+- :material-pulse: **PulseMitigator** — Firmware-level IQ drift prediction and active
+  cancellation. Operates on Level-1 analog readout data to correct TLS frequency
+  drift *before* it corrupts gates. Compatible with both Qiskit 1.x (real pulse)
+  and 2.x (simulation mode). [Docs →](concepts/ml-mitigation.md)
+- :material-cog-transfer: **QgateTranspiler** — ML-aware circuit compiler that auto-tunes
+  probe injection, chaotic padding, and shot oversampling based on the active
+  mitigation mode. Reduces QPU cost by 8–10× when ML mitigators are active.
+  [Docs →](concepts/transpiler.md)
+- :material-shield-check: **Uzdin unitary folding** — Validated ZNE noise amplification utilities
+  with strict odd-integer enforcement, preventing the "digital folding" trap that
+  introduces coherent errors. [Docs →](concepts/uzdin-folding.md)
+- :material-signal: **TVS (Trajectory Viability Score)** — Vectorised HF/LF telemetry fusion
+  with dynamic Kalman-style alpha (Level-1 confidence-weighted, Level-2 static).
+  Gaussian RBF normalisation for I/Q soft-decision data, Galton percentile
+  outlier rejection, and normalised fusion scores for downstream ML.
+  [Docs →](concepts/tvs.md)
+- :material-compress: **TelemetryCompressor** — Two-stage dimensionality reduction (spatial
+  topological pooling + tree-based Gini pruning) for utility-scale 50–156+
+  qubit telemetry. sklearn-compatible transformer for ML pipelines.
+- :material-test-tube: **806 tests** passing (736 prior + 70 auto-router & adaptive Galton tests)
+- :material-chart-bar: **49 benchmark metrics** across 10 tiers (T1–T10) validating the full
+  ML pipeline end-to-end
 
 See the full [Changelog](https://github.com/ranbuch/qgate-trajectory-filter/blob/main/packages/qgate/CHANGELOG.md).
 

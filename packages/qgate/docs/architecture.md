@@ -134,9 +134,14 @@ ancilla-based Z-parity checks with reset and reuse.
 qgate-trajectory-filter/
 ├── packages/
 │   └── qgate/                    # Pip-installable developer toolkit
-│       ├── src/qgate/            # Core library (conditioning + monitors)
-│       │   └── adapters/         # Mock, Qiskit, Grover, QAOA, VQE, QPE
-│       ├── tests/                # 376 unit tests
+│       ├── src/qgate/            # Core library
+│       │   ├── adapters/         # Mock, Qiskit, Grover, QAOA, VQE, QPE
+│       │   ├── mitigation.py     # TelemetryMitigator (Level-2 ML)
+│       │   ├── pulse_mitigator.py# PulseMitigator (Level-1 IQ ML)
+│       │   ├── transpiler.py     # QgateTranspiler + Uzdin utilities
+│       │   ├── compressor.py     # TelemetryCompressor (utility-scale)
+│       │   └── tvs.py            # TVS: HF/LF fusion + Galton filter + adaptive schedule
+│       ├── tests/                # 806 unit tests
 │       └── pyproject.toml        # Build configuration
 │
 ├── simulations/
@@ -145,7 +150,9 @@ qgate-trajectory-filter/
 │   ├── grover_tsvf/             # Grover vs TSVF-Grover (IBM Fez)
 │   ├── qaoa_tsvf/               # QAOA vs TSVF-QAOA MaxCut (IBM Torino)
 │   ├── vqe_tsvf/                # VQE vs TSVF-VQE TFIM (IBM Fez)
-│   └── qpe_tsvf/                # QPE vs TSVF-QPE Phase Est. (IBM Fez)
+│   ├── qpe_tsvf/                # QPE vs TSVF-QPE Phase Est. (IBM Fez)
+│   ├── ml_trajectory_mitigation/# Full-stack ML benchmarks (T1–T10)
+│   └── vns_compatibility/       # VNS experiment (Uzdin-compliant)
 │
 ├── examples/                    # Usage examples
 ├── docs/                        # Documentation
@@ -174,6 +181,47 @@ The research follows a progression from theory to hardware:
  4. Multi-frequency sweep  ──▶   Score fusion absorbs HF noise
     (54 configs, 3 variants)     that destroys logical fusion
 ```
+
+---
+
+## ML-Augmented Pipeline (CIP Addendum)
+
+!!! warning "Patent Pending — Confidential"
+    US App. Nos. 63/983,831 & 63/989,632 | IL App. No. 326915.
+    CIP addendum — ML-augmented TSVF trajectory mitigation.
+
+The CIP extends the binary trajectory filter with three ML modules that
+compose to reduce QPU cost by up to 10× while improving estimation accuracy.
+
+```
+ Binary Pipeline (v0.6)          ML-Augmented Pipeline (CIP)
+ ═══════════════════════          ═══════════════════════════════
+ Chaotic padding (10× depth)     QgateTranspiler (ML-aware)
+       │                                │
+ 10× shot oversampling            1.2× oversampling (probes only)
+       │                                │
+ Binary accept/reject             TelemetryMitigator (Level-2 ML)
+       │                           + Galton filter → ML regression
+       ▼                                │
+ Filtered result                  PulseMitigator (Level-1 IQ ML)
+                                   + Active cancellation
+                                        │
+                                        ▼
+                                  Mitigated expectation value
+```
+
+### Module Responsibility Boundary
+
+| Module | Does | Does NOT |
+|---|---|---|
+| `QgateTranspiler` | Probe injection, padding, shots | Noise amplification, ZNE |
+| `TelemetryMitigator` | Galton filter + ML regression | Circuit modification |
+| `PulseMitigator` | IQ drift prediction + cancellation | Bit-string processing |
+| `process_telemetry_batch` | HF/LF fusion, Galton filtering, ML features | ML regression, circuit ops |
+| `TelemetryCompressor` | Spatial pooling + Gini pruning | Training downstream models |
+| Uzdin utilities | Circuit folding validation | Automatic invocation |
+
+See [ML-Augmented Mitigation](concepts/ml-mitigation.md) for full documentation.
 
 ---
 

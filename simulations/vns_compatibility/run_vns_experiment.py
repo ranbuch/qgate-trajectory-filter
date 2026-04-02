@@ -23,7 +23,9 @@ Two complementary analyses:
 Experiment:
   1. Build a 4-qubit TFIM VQE ansatz circuit (1–2 layers).
   2. Compute exact ground-truth expectation value Q★ via noiseless sim.
-  3. For each noise amplification factor λ ∈ {1, 1.5, 2, 3, 5}:
+  3. For each noise amplification factor λ ∈ {1, 3, 5, 7, 9} (odd integers only,
+     per Uzdin KIK rule — non-odd factors use digital folding which introduces
+     coherent errors that scale non-linearly on physical hardware):
      a) Scale baseline depolarising noise by λ.
      b) Run Analysis A (shot-level QgateSampler).
      c) Run Analysis B (window-level temporal filtering).
@@ -87,7 +89,13 @@ SHOTS = 20_000                    # shots per configuration (Analysis A)
 SEED = 42                         # reproducibility
 
 # Noise amplification factors (Virtual Noise Scaling)
-LAMBDA_VALUES = [1.0, 1.5, 2.0, 3.0, 5.0]
+# Per Uzdin's KIK / Layered mitigation theory, reliable noise amplification
+# on physical hardware MUST use odd integer scale factors.  Non-odd factors
+# (e.g. 1.5, 2.0) require "digital folding" which introduces coherent errors
+# that scale non-linearly — making the amplified noise channel qualitatively
+# different from the original, not merely stronger.
+# See: apply_uzdin_unitary_folding() in qgate.transpiler.
+LAMBDA_VALUES = [1, 3, 5, 7, 9]
 
 # ── Baseline noise parameters (IBM-like depolarising model) ───────────────
 # These are realistic single/two-qubit error rates for current hardware.
@@ -113,30 +121,17 @@ OUTPUT_DIR = SCRIPT_DIR / f"results_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
 # Noise Model Builder
 # ═══════════════════════════════════════════════════════════════════════════
 
-def build_noise_model(
+def _build_noise_model_raw(
     lam: float,
     p1: float = P1_BASELINE,
     p2: float = P2_BASELINE,
     p_meas: float = P_MEAS_BASELINE,
 ) -> NoiseModel:
-    """Build a depolarising NoiseModel with error rates scaled by λ.
+    """Internal: build a noise model with arbitrary (possibly fractional) λ.
 
-    Parameters
-    ----------
-    lam : float
-        Noise amplification factor (1.0 = baseline).
-    p1 : float
-        Baseline 1-qubit depolarising probability.
-    p2 : float
-        Baseline 2-qubit (CX) depolarising probability.
-    p_meas : float
-        Baseline measurement depolarising probability.
-
-    Returns
-    -------
-    NoiseModel
-        Qiskit noise model with all probabilities multiplied by λ.
-        Probabilities are clamped to [0, 1) for physical validity.
+    Used for drifted noise simulation where the effective λ includes a
+    stochastic TLS/thermal component.  External callers should use
+    :func:`build_noise_model` which enforces the Uzdin odd-factor rule.
     """
     model = NoiseModel()
 
@@ -162,8 +157,52 @@ def build_noise_model(
     return model
 
 
+def build_noise_model(
+    lam: int,
+    p1: float = P1_BASELINE,
+    p2: float = P2_BASELINE,
+    p_meas: float = P_MEAS_BASELINE,
+) -> NoiseModel:
+    """Build a depolarising NoiseModel with error rates scaled by λ.
+
+    Parameters
+    ----------
+    lam : int
+        Noise amplification factor (1 = baseline).  Must be a positive
+        odd integer per Uzdin's KIK rule — non-odd factors require
+        digital folding which introduces coherent errors.
+    p1 : float
+        Baseline 1-qubit depolarising probability.
+    p2 : float
+        Baseline 2-qubit (CX) depolarising probability.
+    p_meas : float
+        Baseline measurement depolarising probability.
+
+    Returns
+    -------
+    NoiseModel
+        Qiskit noise model with all probabilities multiplied by λ.
+        Probabilities are clamped to [0, 1) for physical validity.
+
+    Raises
+    ------
+    ValueError
+        If λ is not a positive odd integer.
+    """
+    # Enforce Uzdin odd-factor rule
+    if not isinstance(lam, int) or lam < 1 or lam % 2 == 0:
+        raise ValueError(
+            f"Noise amplification factor λ={lam!r} violates the Uzdin odd-factor "
+            f"rule.  Only positive odd integers (1, 3, 5, 7, …) are permitted.  "
+            f"Non-odd factors require digital folding which introduces coherent "
+            f"errors that scale non-linearly on physical hardware."
+        )
+
+    return _build_noise_model_raw(lam, p1, p2, p_meas)
+
+
 def build_drifted_noise_model(
-    lam: float,
+    lam: int,
     rng: np.random.Generator,
     drift_sigma: float = NOISE_DRIFT_SIGMA,
 ) -> NoiseModel:
@@ -175,10 +214,15 @@ def build_drifted_noise_model(
     distribution centred at 1.0, so some windows experience lower and
     some higher effective noise.
 
+    Note: The drift multiplier produces a fractional effective λ — this is
+    physically correct because it models *environment noise*, not deliberate
+    ZNE amplification.  The base λ must still be a valid odd integer per
+    Uzdin's rule; only the stochastic drift on top of it is continuous.
+
     Parameters
     ----------
-    lam : float
-        Global VNS noise amplification factor.
+    lam : int
+        Global VNS noise amplification factor (odd integer per Uzdin rule).
     rng : Generator
         NumPy random generator for reproducibility.
     drift_sigma : float
@@ -190,10 +234,20 @@ def build_drifted_noise_model(
     NoiseModel
         Noise model with stochastically drifted error rates.
     """
+    # Validate base λ is a valid odd integer (the deliberate amplification)
+    if not isinstance(lam, int) or lam < 1 or lam % 2 == 0:
+        raise ValueError(
+            f"Base amplification factor λ={lam!r} violates the Uzdin odd-factor rule."
+        )
+
     # Draw drift multiplier: log-normal centred at 1.0
     drift = float(rng.lognormal(mean=0.0, sigma=drift_sigma))
     effective_lam = lam * drift
-    return build_noise_model(effective_lam)
+
+    # Build noise model directly with the drifted (fractional) effective λ.
+    # This bypasses the odd-integer check because the drift is environment
+    # noise simulation, not deliberate ZNE amplification.
+    return _build_noise_model_raw(effective_lam)
 
 
 # ═══════════════════════════════════════════════════════════════════════════

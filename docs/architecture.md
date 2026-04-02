@@ -113,7 +113,7 @@ qgate-trajectory-filter/
 │   └── qgate/                    # Pip-installable developer toolkit
 │       ├── src/qgate/            # Core library (conditioning + monitors)
 │       │   └── adapters/         # Mock, Qiskit, Grover, QAOA, VQE, QPE
-│       ├── tests/                # 376 unit tests
+│       ├── tests/                # 806 unit tests
 │       └── pyproject.toml        # Build configuration
 │
 ├── simulations/

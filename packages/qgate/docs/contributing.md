@@ -23,7 +23,7 @@ pytest, pytest-cov, ruff, mypy, pandas, pyarrow, qiskit, etc.
 ## Running Tests
 
 ```bash
-pytest -v tests/                 # 376 tests, ~1 s
+pytest -v tests/                 # 806 tests, ~10 s
 pytest --cov=qgate tests/        # with coverage report
 pytest tests/test_edge_cases.py  # run a single file
 pytest -k "test_frozen"          # run by keyword
