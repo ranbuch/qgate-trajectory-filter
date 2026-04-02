@@ -32,6 +32,10 @@ Benchmark tiers
         │
  Tier 5 │ Full-stack pipeline — Chain TrajectoryFilter → TelemetryMitigator
         │ → PulseMitigator on a realistic multi-stage workload.
+        │
+ Tier 11│ Neural Error Mitigation — Compare PyTorch strategies
+        │ (QJL Transformer, Quantized LSTM, Diffusion Detector) vs
+        │ sklearn baseline on synthesised micro-state token sequences.
 
 Usage::
 
@@ -2016,6 +2020,423 @@ def tier10_tvs_fusion() -> List[BenchmarkMetrics]:
 
 
 # ═══════════════════════════════════════════════════════════════════════════
+#  TIER 11 — Neural Error Mitigation: PyTorch Strategy Comparison
+# ═══════════════════════════════════════════════════════════════════════════
+
+
+def tier11_neural_mitigation() -> List[BenchmarkMetrics]:
+    """Neural error mitigation strategy comparison benchmark.
+
+    Compares three PyTorch-based mitigation strategies against the existing
+    sklearn-based TelemetryMitigator (Stage 2) on synthesised micro-state
+    token sequences derived from the same Ising Hamiltonian data used in
+    Tiers 2 and 7.
+
+    Strategies tested:
+      A.  **QJL Linear Transformer** — Linear attention with
+          Johnson–Lindenstrauss random projection for error correction.
+      B.  **Legacy Quantized LSTM** — Quantized LSTM baseline for
+          latency/accuracy comparison.
+      C.  **Diffusion Anomaly Detector** — Discrete sequence-to-sequence
+          denoising diffusion model for noise-robust mitigation.
+
+    Protocol:
+    1. Generate synthetic Level-1.5 micro-state token sequences from
+       noise-sweep telemetry data (8 qubits, 15 Trotter steps).
+    2. Train each strategy on 80 % of data, evaluate on held-out 20 %.
+    3. Measure MAE reduction vs raw (unmitgated) observable estimate.
+    4. Measure inference latency per batch.
+    5. Compare against sklearn TelemetryMitigator baseline.
+
+    Requires PyTorch ≥ 2.0 (skipped gracefully if unavailable).
+    """
+    _print_tier(11, "Neural Error Mitigation — PyTorch Strategy Comparison")
+    metrics: List[BenchmarkMetrics] = []
+
+    # ── Check for PyTorch ─────────────────────────────────────────────
+    try:
+        import torch  # noqa: F811
+    except ImportError:
+        print("  ⚠  PyTorch not installed. Skipping Tier 11.")
+        return metrics
+
+    from qgate.neural_mitigation import (
+        NeuralMitigationConfig,
+        TelemetryProcessor,
+        generate_mock_dataset,
+        list_strategies,
+        run_historical_benchmarks,
+        print_benchmark_report,
+    )
+
+    rng = np.random.default_rng(20260411)
+    exact_energy = -24.898484  # Ising Hamiltonian (consistent with T2/T7/T10)
+
+    # ── Configuration ─────────────────────────────────────────────────
+    config = NeuralMitigationConfig(
+        vocab_size=64,
+        embed_dim=32,
+        max_seq_len=64,
+        n_heads=4,
+        n_layers=2,
+        hidden_dim=64,
+        dropout=0.1,
+        diffusion_steps=10,
+        qjl_dim=16,
+        random_state=42,
+    )
+
+    # ── Synthesise token data ─────────────────────────────────────────
+    print("\n  Generating micro-state token sequences …")
+    n_samples = 2000
+    seq_len = 64
+    tokens, observables = generate_mock_dataset(
+        n_samples=n_samples, seq_len=seq_len,
+        vocab_size=config.vocab_size, seed=42,
+    )
+
+    # Shift observables to be centred around exact_energy (more realistic)
+    # but keep per-sample noise so the raw MAE is non-trivial.
+    observables = observables + (exact_energy - observables.mean())
+
+    # Raw error: per-sample MAE — the error any mitigation must beat
+    raw_mae = float(np.mean(np.abs(observables.numpy() - exact_energy)))
+    print(f"  Raw observable mean: {observables.mean().item():.6f}")
+    print(f"  Raw per-sample MAE: {raw_mae:.6f}")
+    print(f"  Raw observable std: {observables.std().item():.6f}")
+
+    # ── Train/test split (80/20) ──────────────────────────────────────
+    n_train = int(0.8 * n_samples)
+    idx = rng.permutation(n_samples)
+    train_idx = idx[:n_train]
+    test_idx = idx[n_train:]
+
+    train_tokens = tokens[train_idx]
+    train_obs = observables[train_idx]
+    test_tokens = tokens[test_idx]
+    test_obs = observables[test_idx]
+
+    print(f"  Train: {len(train_idx)} samples  Test: {len(test_idx)} samples")
+
+    # ── Run benchmark per strategy ────────────────────────────────────
+    n_train_epochs = 50
+    strategy_names = list_strategies()
+
+    results_table: List[List[str]] = []
+
+    for strat_name in strategy_names:
+        print(f"\n  {'─' * 60}")
+        print(f"  Strategy: {strat_name}")
+        print(f"  {'─' * 60}")
+
+        proc = TelemetryProcessor(method=strat_name, config=config)
+
+        # Calibrate
+        print(f"  Training for {n_train_epochs} epochs …")
+        cal = proc.calibrate(train_tokens, train_obs, n_epochs=n_train_epochs, lr=1e-3)
+        print(f"  Final train loss: {cal.final_loss:.6f}  "
+              f"({cal.n_parameters:,} params, {cal.elapsed_seconds:.1f}s)")
+
+        # Inference on test set
+        import time as _time
+        t0 = _time.perf_counter()
+        result = proc.forward(test_tokens)
+        latency_ms = (_time.perf_counter() - t0) * 1000.0
+
+        preds = result.mitigated_values
+        test_mae = float(np.mean(np.abs(preds - test_obs.numpy())))
+        mitigated_mean = float(np.mean(preds))
+        mitigated_error = abs(mitigated_mean - exact_energy)
+
+        improvement = raw_mae / test_mae if test_mae > 1e-12 else float("inf")
+
+        print(f"  Test MAE: {test_mae:.6f}")
+        print(f"  Mitigated mean: {mitigated_mean:.6f}  "
+              f"(error={mitigated_error:.6f})")
+        print(f"  MAE improvement over raw: {improvement:.2f}×")
+        print(f"  Inference latency: {latency_ms:.1f} ms  "
+              f"({len(test_idx)} samples)")
+
+        results_table.append([
+            strat_name,
+            f"{test_mae:.6f}",
+            f"{mitigated_error:.6f}",
+            f"{improvement:.2f}×",
+            f"{latency_ms:.1f} ms",
+            f"{cal.n_parameters:,}",
+        ])
+
+        metrics.append(BenchmarkMetrics(
+            tier="T11",
+            name=f"neural_{strat_name}",
+            raw_error=raw_mae,
+            mitigated_error=test_mae,
+            improvement_factor=improvement,
+            extra={
+                "strategy": strat_name,
+                "test_mae": test_mae,
+                "mean_error": mitigated_error,
+                "n_parameters": cal.n_parameters,
+                "latency_ms": latency_ms,
+                "n_train_epochs": n_train_epochs,
+                "n_train": n_train,
+                "n_test": len(test_idx),
+                "final_train_loss": cal.final_loss,
+            },
+        ))
+
+    # ── sklearn baseline (TelemetryMitigator) ─────────────────────────
+    print(f"\n  {'─' * 60}")
+    print("  Baseline: TelemetryMitigator (sklearn)")
+    print(f"  {'─' * 60}")
+    try:
+        # Build TelemetryMitigator-compatible dicts from token sequences.
+        # Derive energy/acceptance/variance features from token statistics.
+        def _tokens_to_telemetry(tok_tensor, obs_tensor, include_ideal=False):
+            """Convert token sequences to TelemetryMitigator-compatible dicts."""
+            tok_np = tok_tensor.float().numpy()
+            obs_np = obs_tensor.numpy()
+            records = []
+            for i in range(len(tok_np)):
+                # Map token statistics → telemetry features
+                row_mean = tok_np[i].mean()
+                row_std = tok_np[i].std()
+                d = {
+                    "energy": float(obs_np[i]),
+                    "acceptance": float(np.clip(1.0 - row_std / 40.0, 0.3, 1.0)),
+                    "variance": float(row_std ** 2),
+                }
+                if include_ideal:
+                    d["ideal"] = exact_energy
+                records.append(d)
+            return records
+
+        train_records = _tokens_to_telemetry(train_tokens, train_obs, include_ideal=True)
+        test_records = _tokens_to_telemetry(test_tokens, test_obs, include_ideal=False)
+        y_test = test_obs.numpy()
+
+        mit = TelemetryMitigator()
+        mit_cal = mit.calibrate(train_records)
+        print(f"  Calibrated: {mit_cal.model_name}  "
+              f"(train MAE={mit_cal.train_mae:.6f}, {mit_cal.n_samples} samples)")
+
+        import time as _time
+        t0 = _time.perf_counter()
+        mit_results = mit.estimate_batch(test_records)
+        sk_latency_ms = (_time.perf_counter() - t0) * 1000.0
+
+        sk_preds = np.array([r.mitigated_value for r in mit_results])
+        sk_mae = float(np.mean(np.abs(sk_preds - y_test)))
+        sk_improvement = raw_mae / sk_mae if sk_mae > 1e-12 else float("inf")
+
+        print(f"  Test MAE: {sk_mae:.6f}")
+        print(f"  MAE improvement: {sk_improvement:.2f}×")
+        print(f"  Inference latency: {sk_latency_ms:.1f} ms")
+
+        sk_mitigated_mean = float(np.mean(sk_preds))
+        sk_mean_error = abs(sk_mitigated_mean - exact_energy)
+
+        results_table.append([
+            "sklearn_baseline",
+            f"{sk_mae:.6f}",
+            f"{sk_mean_error:.6f}",
+            f"{sk_improvement:.2f}×",
+            f"{sk_latency_ms:.1f} ms",
+            "—",
+        ])
+
+        metrics.append(BenchmarkMetrics(
+            tier="T11",
+            name="sklearn_baseline",
+            raw_error=raw_mae,
+            mitigated_error=sk_mae,
+            improvement_factor=sk_improvement,
+            extra={
+                "strategy": "sklearn_telemetry_mitigator",
+                "test_mae": sk_mae,
+                "mean_error": sk_mean_error,
+                "latency_ms": sk_latency_ms,
+                "model_name": mit_cal.model_name,
+            },
+        ))
+
+    except Exception as e:
+        print(f"  ⚠  sklearn baseline failed: {e}")
+        import traceback; traceback.print_exc()
+
+    # ── Speed-optimised QJL variants ──────────────────────────────────
+    # Test the four speed optimisations: pruned architecture (1L/2H),
+    # temporal Conv1D downsampling (stride=4), torch.compile, and
+    # ONNX Runtime inference.
+    from qgate.neural_mitigation import (
+        QJLLinearTransformer,
+        fast_qjl_config,
+    )
+
+    speed_variants = {
+        "qjl_pruned_1L2H": {
+            "config": fast_qjl_config(use_temporal_downsample=False),
+            "use_ort": False,
+        },
+        "qjl_pruned_downsample": {
+            "config": fast_qjl_config(),  # downsample_stride=4 by default
+            "use_ort": False,
+        },
+        "qjl_pruned_ort": {
+            "config": fast_qjl_config(use_temporal_downsample=False),
+            "use_ort": True,
+        },
+        "qjl_pruned_ds_ort": {
+            "config": fast_qjl_config(),
+            "use_ort": True,
+        },
+    }
+
+    # Use the default-config QJL baseline latency already measured above
+    baseline_latency_ms = None
+    for m in metrics:
+        if m.name == "neural_qjl_transformer":
+            baseline_latency_ms = m.extra.get("latency_ms")
+            break
+
+    for variant_name, spec in speed_variants.items():
+        print(f"\n  {'─' * 60}")
+        print(f"  Speed variant: {variant_name}")
+        print(f"  {'─' * 60}")
+
+        try:
+            cfg = spec["config"]
+            strat = QJLLinearTransformer(cfg)
+
+            # Train
+            cal = strat.calibrate(
+                train_tokens, train_obs,
+                n_epochs=n_train_epochs, lr=1e-3,
+            )
+            print(f"  Trained: {cal.n_parameters:,} params, "
+                  f"loss={cal.final_loss:.6f}, {cal.elapsed_seconds:.1f}s")
+
+            # Set up ORT if requested
+            if spec["use_ort"]:
+                strat.prepare_ort_session()
+                infer_fn = strat.forward_ort
+            else:
+                strat.model.eval()
+                infer_fn = strat.forward
+
+            # Warmup
+            import time as _time
+            for _ in range(10):
+                with torch.no_grad():
+                    infer_fn(test_tokens[:1])
+
+            # Batch inference + timing
+            t0 = _time.perf_counter()
+            with torch.no_grad():
+                preds_t = infer_fn(test_tokens)
+            latency_ms = (_time.perf_counter() - t0) * 1000.0
+
+            if isinstance(preds_t, torch.Tensor):
+                preds_np = preds_t.detach().cpu().numpy()
+            else:
+                preds_np = np.asarray(preds_t)
+
+            test_mae = float(np.mean(np.abs(preds_np - test_obs.numpy())))
+            mitigated_mean = float(np.mean(preds_np))
+            mitigated_error = abs(mitigated_mean - exact_energy)
+            improvement = raw_mae / test_mae if test_mae > 1e-12 else float("inf")
+
+            speedup_vs_baseline = (
+                baseline_latency_ms / latency_ms
+                if baseline_latency_ms and latency_ms > 0
+                else 0.0
+            )
+
+            # Single-sample latency (more representative for real-time)
+            single_times = []
+            for _ in range(100):
+                ts = _time.perf_counter_ns()
+                with torch.no_grad():
+                    infer_fn(test_tokens[:1])
+                single_times.append((_time.perf_counter_ns() - ts) / 1_000.0)
+            single_latency_us = float(np.mean(single_times))
+
+            print(f"  Test MAE: {test_mae:.6f}")
+            print(f"  Improvement: {improvement:.2f}×")
+            print(f"  Batch latency: {latency_ms:.1f} ms "
+                  f"({speedup_vs_baseline:.1f}× vs baseline)")
+            print(f"  Single-sample latency: {single_latency_us:.1f} µs")
+
+            results_table.append([
+                variant_name,
+                f"{test_mae:.6f}",
+                f"{mitigated_error:.6f}",
+                f"{improvement:.2f}×",
+                f"{latency_ms:.1f} ms",
+                f"{cal.n_parameters:,}",
+            ])
+
+            metrics.append(BenchmarkMetrics(
+                tier="T11",
+                name=f"neural_{variant_name}",
+                raw_error=raw_mae,
+                mitigated_error=test_mae,
+                improvement_factor=improvement,
+                extra={
+                    "strategy": variant_name,
+                    "test_mae": test_mae,
+                    "mean_error": mitigated_error,
+                    "n_parameters": cal.n_parameters,
+                    "latency_ms": latency_ms,
+                    "single_sample_latency_us": single_latency_us,
+                    "speedup_vs_baseline": round(speedup_vs_baseline, 2),
+                    "n_train_epochs": n_train_epochs,
+                    "n_train": n_train,
+                    "n_test": len(test_idx),
+                    "final_train_loss": cal.final_loss,
+                    "use_ort": spec["use_ort"],
+                    "use_temporal_downsample": cfg.use_temporal_downsample,
+                    "downsample_stride": cfg.downsample_stride,
+                    "n_layers": cfg.n_layers,
+                    "n_heads": cfg.n_heads,
+                },
+            ))
+
+        except Exception as e:
+            print(f"  ⚠  Speed variant {variant_name} failed: {e}")
+            import traceback; traceback.print_exc()
+
+    # ── Summary table ─────────────────────────────────────────────────
+    print(f"\n  {'═' * 60}")
+    print("  TIER 11 SUMMARY — Neural Error Mitigation Comparison")
+    print(f"  {'═' * 60}")
+
+    print(_format_table(
+        results_table,
+        ["Strategy", "Test MAE", "Mean Error", "Improvement", "Latency", "Params"],
+    ))
+
+    # ── Key findings ──────────────────────────────────────────────────
+    print(f"\n  {SUBHEADER}")
+    print("  Key findings")
+    print(f"  {SUBHEADER}")
+
+    neural_metrics = [m for m in metrics if m.name.startswith("neural_")]
+    if neural_metrics:
+        best_neural = max(neural_metrics, key=lambda m: m.improvement_factor)
+        print(f"  Best neural strategy: {best_neural.extra['strategy']}  "
+              f"({best_neural.improvement_factor:.2f}× improvement)")
+        fastest = min(neural_metrics, key=lambda m: m.extra["latency_ms"])
+        print(f"  Fastest strategy: {fastest.extra['strategy']}  "
+              f"({fastest.extra['latency_ms']:.1f} ms)")
+        smallest = min(neural_metrics, key=lambda m: m.extra["n_parameters"])
+        print(f"  Smallest model: {smallest.extra['strategy']}  "
+              f"({smallest.extra['n_parameters']:,} params)")
+
+    return metrics
+
+
+# ═══════════════════════════════════════════════════════════════════════════
 #  MAIN — Run all tiers and produce summary
 # ═══════════════════════════════════════════════════════════════════════════
 
@@ -2046,6 +2467,7 @@ def main() -> None:
     all_metrics.extend(tier8_shot_efficiency())
     all_metrics.extend(tier9_noise_phase_diagram())
     all_metrics.extend(tier10_tvs_fusion())
+    all_metrics.extend(tier11_neural_mitigation())
 
     # ═══════════════════════════════════════════════════════════════════
     #  AGGREGATE SUMMARY
@@ -2105,6 +2527,8 @@ def main() -> None:
     print(f"    ✓ TVS Level-1 vs Level-2 fusion comparison")
     print(f"    ✓ Dynamic-α (Kalman) vs static-α TTS improvement")
     print(f"    ✓ Soft-decision I/Q decoding advantage quantified")
+    print(f"    ✓ Neural mitigation strategy comparison (3 PyTorch + sklearn)")
+    print(f"    ✓ QJL Transformer / Quantized LSTM / Diffusion Detector benchmarked")
 
     # Save results to JSON
     output_path = REPO_ROOT / "simulations" / "ml_trajectory_mitigation" / "benchmark_results.json"

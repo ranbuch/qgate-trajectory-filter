@@ -1,8 +1,8 @@
 {
   "benchmark": "qgate_full_stack_validation",
-  "timestamp": "20260320_222403",
-  "elapsed_seconds": 12.070406913757324,
-  "n_benchmarks": 49,
+  "timestamp": "20260402_141500",
+  "elapsed_seconds": 104.29,
+  "n_benchmarks": 57,
   "metrics": [
     {
       "tier": "T1",
@@ -708,6 +708,174 @@
         "tts": 0.00927556738642138,
         "tts_improvement": 0.7119643729300371,
         "n_shots": 5000
+      }
+    },
+    {
+      "tier": "T11",
+      "name": "neural_qjl_transformer",
+      "raw_error": 0.09256190806627274,
+      "mitigated_error": 0.09050975739955902,
+      "improvement_factor": 1.0226732534223288,
+      "extra": {
+        "strategy": "qjl_transformer",
+        "test_mae": 0.09050975739955902,
+        "mean_error": 0.008261910644531412,
+        "n_parameters": 23169,
+        "latency_ms": 26.587583999997833,
+        "n_train_epochs": 50,
+        "n_train": 1600,
+        "n_test": 400,
+        "final_train_loss": 2.0988250207901
+      }
+    },
+    {
+      "tier": "T11",
+      "name": "neural_legacy_lstm",
+      "raw_error": 0.09256190806627274,
+      "mitigated_error": 0.35010457038879395,
+      "improvement_factor": 0.2643836039143448,
+      "extra": {
+        "strategy": "legacy_lstm",
+        "test_mae": 0.35010457038879395,
+        "mean_error": 0.35083080175781234,
+        "n_parameters": 62657,
+        "latency_ms": 39.60041600000608,
+        "n_train_epochs": 50,
+        "n_train": 1600,
+        "n_test": 400,
+        "final_train_loss": 3.8351795864105225
+      }
+    },
+    {
+      "tier": "T11",
+      "name": "neural_diffusion_detector",
+      "raw_error": 0.09256190806627274,
+      "mitigated_error": 0.11376646161079407,
+      "improvement_factor": 0.813613315872791,
+      "extra": {
+        "strategy": "diffusion_detector",
+        "test_mae": 0.11376646161079407,
+        "mean_error": 0.07938457373046859,
+        "n_parameters": 19265,
+        "latency_ms": 1.5828750000039804,
+        "n_train_epochs": 50,
+        "n_train": 1600,
+        "n_test": 400,
+        "final_train_loss": 2.682807674407959
+      }
+    },
+    {
+      "tier": "T11",
+      "name": "sklearn_baseline",
+      "raw_error": 0.09256190806627274,
+      "mitigated_error": 0.0954335450783978,
+      "improvement_factor": 0.9699095636679321,
+      "extra": {
+        "strategy": "sklearn_telemetry_mitigator",
+        "test_mae": 0.0954335450783978,
+        "mean_error": 0.00017851076826147505,
+        "latency_ms": 10.304832999999292,
+        "model_name": "RandomForestRegressor"
+      }
+    },
+    {
+      "tier": "T11",
+      "name": "neural_qjl_pruned_1L2H",
+      "raw_error": 0.09256190806627274,
+      "mitigated_error": 0.13529115915298462,
+      "improvement_factor": 0.6841681943282453,
+      "extra": {
+        "strategy": "qjl_pruned_1L2H",
+        "test_mae": 0.13529115915298462,
+        "mean_error": 0.12229991796874984,
+        "n_parameters": 16801,
+        "latency_ms": 9.030999999993128,
+        "single_sample_latency_us": 270.99247999999994,
+        "speedup_vs_baseline": 2.94,
+        "n_train_epochs": 50,
+        "n_train": 1600,
+        "n_test": 400,
+        "final_train_loss": 2.575871801376343,
+        "use_ort": false,
+        "use_temporal_downsample": false,
+        "downsample_stride": 4,
+        "n_layers": 1,
+        "n_heads": 2
+      }
+    },
+    {
+      "tier": "T11",
+      "name": "neural_qjl_pruned_downsample",
+      "raw_error": 0.09256190806627274,
+      "mitigated_error": 0.10694286227226257,
+      "improvement_factor": 0.8655267504494334,
+      "extra": {
+        "strategy": "qjl_pruned_downsample",
+        "test_mae": 0.10694286227226257,
+        "mean_error": 0.07517314794921859,
+        "n_parameters": 20929,
+        "latency_ms": 9.543958000008956,
+        "single_sample_latency_us": 305.13706,
+        "speedup_vs_baseline": 2.79,
+        "n_train_epochs": 50,
+        "n_train": 1600,
+        "n_test": 400,
+        "final_train_loss": 2.002373514175415,
+        "use_ort": false,
+        "use_temporal_downsample": true,
+        "downsample_stride": 4,
+        "n_layers": 1,
+        "n_heads": 2
+      }
+    },
+    {
+      "tier": "T11",
+      "name": "neural_qjl_pruned_ort",
+      "raw_error": 0.09256190806627274,
+      "mitigated_error": 0.20743818581104279,
+      "improvement_factor": 0.4462144117987426,
+      "extra": {
+        "strategy": "qjl_pruned_ort",
+        "test_mae": 0.20743818581104279,
+        "mean_error": 0.2068870151367186,
+        "n_parameters": 16801,
+        "latency_ms": 17.377290999988304,
+        "single_sample_latency_us": 62.36457,
+        "speedup_vs_baseline": 1.53,
+        "n_train_epochs": 50,
+        "n_train": 1600,
+        "n_test": 400,
+        "final_train_loss": 2.2281691646575927,
+        "use_ort": true,
+        "use_temporal_downsample": false,
+        "downsample_stride": 4,
+        "n_layers": 1,
+        "n_heads": 2
+      }
+    },
+    {
+      "tier": "T11",
+      "name": "neural_qjl_pruned_ds_ort",
+      "raw_error": 0.09256190806627274,
+      "mitigated_error": 0.10694301873445511,
+      "improvement_factor": 0.8655254841469232,
+      "extra": {
+        "strategy": "qjl_pruned_ds_ort",
+        "test_mae": 0.10694301873445511,
+        "mean_error": 0.07517314794921859,
+        "n_parameters": 20929,
+        "latency_ms": 5.466667000007419,
+        "single_sample_latency_us": 36.45626,
+        "speedup_vs_baseline": 4.86,
+        "n_train_epochs": 50,
+        "n_train": 1600,
+        "n_test": 400,
+        "final_train_loss": 2.002373514175415,
+        "use_ort": true,
+        "use_temporal_downsample": true,
+        "downsample_stride": 4,
+        "n_layers": 1,
+        "n_heads": 2
       }
     }
   ]

@@ -130,6 +130,36 @@ from qgate.tvs import (
     process_telemetry_batch,
 )
 
+# ── Neural Mitigation — PyTorch strategy-based error mitigation ───────────
+# Three interchangeable neural strategies (QJL Linear Transformer, LSTM
+# baseline, Diffusion anomaly detector) for Level-1.5 micro-state telemetry.
+# ONNX/HLS compatible for FPGA edge deployment.
+# Patent pending — US App. Nos. 63/983,831 & 63/989,632, IL 326915.
+# CIP addendum — Neural ML-augmented TSVF trajectory mitigation.
+try:
+    from qgate.neural_mitigation import (
+        BenchmarkEntry,
+        BenchmarkReport,
+        DiffusionAnomalyDetector,
+        ErrorMitigationStrategy,
+        LegacyQuantizedLSTM,
+        NeuralCalibrationResult,
+        NeuralMitigationConfig,
+        NeuralMitigationResult,
+        QJLLinearTransformer,
+        STRATEGY_REGISTRY,
+        TelemetryProcessor,
+        fast_qjl_config,
+        generate_mock_dataset,
+        list_strategies,
+        print_benchmark_report,
+        run_historical_benchmarks,
+    )
+
+    HAS_NEURAL = True
+except ImportError:  # pragma: no cover — torch not installed
+    HAS_NEURAL = False
+
 # ── QgateSampler OS layer ─────────────────────────────────────────────────
 # Transparent drop-in SamplerV2 replacement with autonomous probe injection
 # and Galton-filtered result reconstruction.
@@ -229,3 +259,25 @@ __all__ = [
     # Uzdin scale-factor validator
     "validate_noise_scale_factor",
 ]
+
+# ── Conditionally extend __all__ with neural mitigation symbols ───────────
+if HAS_NEURAL:
+    __all__.extend([
+        # Neural Mitigation — PyTorch strategy-based pipeline
+        "BenchmarkEntry",
+        "BenchmarkReport",
+        "DiffusionAnomalyDetector",
+        "ErrorMitigationStrategy",
+        "LegacyQuantizedLSTM",
+        "NeuralCalibrationResult",
+        "NeuralMitigationConfig",
+        "NeuralMitigationResult",
+        "QJLLinearTransformer",
+        "STRATEGY_REGISTRY",
+        "TelemetryProcessor",
+        "fast_qjl_config",
+        "generate_mock_dataset",
+        "list_strategies",
+        "print_benchmark_report",
+        "run_historical_benchmarks",
+    ])
