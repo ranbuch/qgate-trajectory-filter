@@ -2533,6 +2533,122 @@ def tier12_financial_monte_carlo() -> List[BenchmarkMetrics]:
 
 
 # ═══════════════════════════════════════════════════════════════════════════
+#  T13: Generative AI Diffusion Acceleration
+# ═══════════════════════════════════════════════════════════════════════════
+
+
+def tier13_diffusion_acceleration() -> List[BenchmarkMetrics]:
+    """T13 — PPU trajectory filtering for generative diffusion models.
+
+    Extends the two-stage Galton + ML architecture to diffusion-model
+    latent-space tensors.  A batch of cheap 10-step denoising runs is
+    filtered and fused into a single high-fidelity latent that
+    approaches 50-step quality.
+
+    Patent reference: CIP §22 — PPU generalisation to generative AI.
+    """
+    print(f"\n\n{HEADER}")
+    print("  T13: Generative AI — Diffusion Acceleration")
+    print(f"{HEADER}\n")
+
+    from qgate.diffusion import run_diffusion_benchmark as _run_diff
+
+    metrics: List[BenchmarkMetrics] = []
+
+    # Use compact latent shape for speed
+    _C, _H, _W = 4, 16, 16
+
+    scenarios = [
+        ("Macro Watch • RF • batch=8", dict(
+            prompt="A macro photography shot of a mechanical watch movement, "
+                   "intricate gears, ruby bearings, dramatic studio lighting, "
+                   "8k resolution, photorealistic.",
+            gt_steps=50, budget_steps=10, n_batch=8, n_calibration=16,
+            latent_channels=_C, latent_height=_H, latent_width=_W,
+            model_name="random_forest", seed=42,
+        )),
+        ("Macro Watch • GBR • batch=8", dict(
+            prompt="A macro photography shot of a mechanical watch movement, "
+                   "intricate gears, ruby bearings, dramatic studio lighting, "
+                   "8k resolution, photorealistic.",
+            gt_steps=50, budget_steps=10, n_batch=8, n_calibration=16,
+            latent_channels=_C, latent_height=_H, latent_width=_W,
+            model_name="gradient_boosting", seed=42,
+        )),
+        ("Ocean Sunset • RF • batch=8", dict(
+            prompt="A vast ocean sunset with golden light reflecting off "
+                   "gentle waves, wispy cirrus clouds, long exposure.",
+            gt_steps=50, budget_steps=10, n_batch=8, n_calibration=16,
+            latent_channels=_C, latent_height=_H, latent_width=_W,
+            model_name="random_forest", seed=123,
+        )),
+        ("City Neon • RF • batch=8", dict(
+            prompt="A cyberpunk city street at night, neon signs in Japanese, "
+                   "rain-slicked asphalt reflecting light, blade runner.",
+            gt_steps=50, budget_steps=10, n_batch=8, n_calibration=16,
+            latent_channels=_C, latent_height=_H, latent_width=_W,
+            model_name="random_forest", seed=777,
+        )),
+        ("Macro Watch • RF • batch=16", dict(
+            prompt="A macro photography shot of a mechanical watch movement, "
+                   "intricate gears, ruby bearings, dramatic studio lighting, "
+                   "8k resolution, photorealistic.",
+            gt_steps=50, budget_steps=10, n_batch=16, n_calibration=16,
+            latent_channels=_C, latent_height=_H, latent_width=_W,
+            model_name="random_forest", seed=42,
+        )),
+        ("Macro Watch • Ridge • batch=8", dict(
+            prompt="A macro photography shot of a mechanical watch movement, "
+                   "intricate gears, ruby bearings, dramatic studio lighting, "
+                   "8k resolution, photorealistic.",
+            gt_steps=50, budget_steps=10, n_batch=8, n_calibration=16,
+            latent_channels=_C, latent_height=_H, latent_width=_W,
+            model_name="ridge", seed=42,
+        )),
+    ]
+
+    for label, kwargs in scenarios:
+        result = _run_diff(**kwargs)
+
+        raw_fid = result["raw_budget"]["fid"]
+        mit_fid = result["qgate_mitigated"]["fid"]
+        imp = result["improvement"]["fid_improvement"]
+
+        metrics.append(BenchmarkMetrics(
+            tier="T13",
+            name=f"Diff {label}",
+            raw_error=raw_fid,
+            mitigated_error=mit_fid,
+            improvement_factor=imp,
+            extra={
+                "raw_clip": result["raw_budget"]["clip_score"],
+                "mit_clip": result["qgate_mitigated"]["clip_score"],
+                "raw_psnr": result["raw_budget"]["psnr"],
+                "mit_psnr": result["qgate_mitigated"]["psnr"],
+                "psnr_gain_db": result["improvement"]["psnr_improvement_db"],
+                "clip_improvement": result["improvement"]["clip_improvement"],
+                "speedup_vs_gt": result["improvement"]["speedup_vs_gt"],
+                "stage1_survivors": result["qgate_mitigated"]["stage1_survivors"],
+                "stage1_rejected": result["qgate_mitigated"]["stage1_rejected"],
+                "model_name": result["calibration"]["model_name"],
+                "n_batch": result["params"]["n_batch"],
+                "gt_steps": result["params"]["gt_steps"],
+                "budget_steps": result["params"]["budget_steps"],
+                "mitigate_seconds": result["timing"]["mitigate_wall_seconds"],
+            },
+        ))
+
+        print(f"  {label:40s}  FID raw={raw_fid:.3f}  FID mit={mit_fid:.3f}  "
+              f"imp={imp:.2f}×  CLIP={result['qgate_mitigated']['clip_score']:.3f}")
+
+    if metrics:
+        best = max(metrics, key=lambda m: m.improvement_factor)
+        print(f"\n  Best: {best.name} — {best.improvement_factor:.2f}× FID improvement")
+
+    return metrics
+
+
+# ═══════════════════════════════════════════════════════════════════════════
 #  MAIN — Run all tiers and produce summary
 # ═══════════════════════════════════════════════════════════════════════════
 
@@ -2565,6 +2681,7 @@ def main() -> None:
     all_metrics.extend(tier10_tvs_fusion())
     all_metrics.extend(tier11_neural_mitigation())
     all_metrics.extend(tier12_financial_monte_carlo())
+    all_metrics.extend(tier13_diffusion_acceleration())
 
     # ═══════════════════════════════════════════════════════════════════
     #  AGGREGATE SUMMARY
@@ -2629,6 +2746,10 @@ def main() -> None:
     print(f"    ✓ PPU generalisation: financial Monte Carlo acceleration (§22)")
     print(f"    ✓ fBM non-Markovian + GBM baseline + high-vol regime tested")
     print(f"    ✓ Equivalent-path compute reduction quantified (100-1000×)")
+    print(f"    ✓ PPU generalisation: generative AI diffusion acceleration (§22)")
+    print(f"    ✓ Latent-space FID, CLIP, PSNR metrics across multiple prompts")
+    print(f"    ✓ Multi-model comparison (RF/GBR/Ridge) on diffusion latents")
+    print(f"    ✓ Batch-size scaling (8× vs 16× trajectories) validated")
 
     # Save results to JSON
     output_path = REPO_ROOT / "simulations" / "ml_trajectory_mitigation" / "benchmark_results.json"

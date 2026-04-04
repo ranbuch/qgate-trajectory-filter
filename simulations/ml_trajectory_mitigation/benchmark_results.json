@@ -1,8 +1,8 @@
 {
   "benchmark": "qgate_full_stack_validation",
-  "timestamp": "20260402_141500",
+  "timestamp": "20260404_063000",
   "elapsed_seconds": 104.29,
-  "n_benchmarks": 63,
+  "n_benchmarks": 69,
   "metrics": [
     {
       "tier": "T1",
@@ -886,7 +886,7 @@
       "improvement_factor": 463.3,
       "extra": {
         "ground_truth_price": 18.3553,
-        "mitigated_price": 18.3550,
+        "mitigated_price": 18.355,
         "equivalent_paths": 6805530358,
         "compute_reduction": 6805530,
         "stage1_survivors": 750,
@@ -903,11 +903,11 @@
       "tier": "T12",
       "name": "MC GBM H=0.5 (baseline)",
       "raw_error": 0.028344,
-      "mitigated_error": 0.000001,
+      "mitigated_error": 1e-06,
       "improvement_factor": 41501.6,
       "extra": {
-        "ground_truth_price": 5.7800,
-        "mitigated_price": 5.7800,
+        "ground_truth_price": 5.78,
+        "mitigated_price": 5.78,
         "equivalent_paths": 136639705013639,
         "compute_reduction": 136639705014,
         "stage1_survivors": 750,
@@ -922,9 +922,9 @@
     },
     {
       "tier": "T12",
-      "name": "MC High Vol σ=0.4, H=0.7",
+      "name": "MC High Vol \u03c3=0.4, H=0.7",
       "raw_error": 0.915064,
-      "mitigated_error": 0.002190,
+      "mitigated_error": 0.00219,
       "improvement_factor": 417.8,
       "extra": {
         "ground_truth_price": 50.5086,
@@ -1002,6 +1002,144 @@
         "n_budget": 1000,
         "n_ground_truth": 100000,
         "mitigate_seconds": 0.027
+      }
+    },
+    {
+      "tier": "T13",
+      "name": "Diff Macro Watch \u2022 RF \u2022 batch=8",
+      "raw_error": 1.4466637657567696,
+      "mitigated_error": 0.8189874201706999,
+      "improvement_factor": 1.7664053563304358,
+      "extra": {
+        "raw_clip": 0.8736155829608742,
+        "mit_clip": 0.9518342822096972,
+        "raw_psnr": 10.681344217003552,
+        "mit_psnr": 14.684084271245226,
+        "psnr_gain_db": 4.002740054241674,
+        "clip_improvement": 1.0895344597491299,
+        "speedup_vs_gt": 0.6242270423304801,
+        "stage1_survivors": 6,
+        "stage1_rejected": 2,
+        "model_name": "random_forest",
+        "n_batch": 8,
+        "gt_steps": 50,
+        "budget_steps": 10,
+        "mitigate_seconds": 0.07924887499999977
+      }
+    },
+    {
+      "tier": "T13",
+      "name": "Diff Macro Watch \u2022 GBR \u2022 batch=8",
+      "raw_error": 1.4466637657567696,
+      "mitigated_error": 0.8200737393981026,
+      "improvement_factor": 1.7640654690620334,
+      "extra": {
+        "raw_clip": 0.8736155829608742,
+        "mit_clip": 0.9518360628919278,
+        "raw_psnr": 10.681344217003552,
+        "mit_psnr": 14.679227394550093,
+        "psnr_gain_db": 3.997883177546541,
+        "clip_improvement": 1.0895364980395008,
+        "speedup_vs_gt": 0.624939382500834,
+        "stage1_survivors": 6,
+        "stage1_rejected": 2,
+        "model_name": "gradient_boosting",
+        "n_batch": 8,
+        "gt_steps": 50,
+        "budget_steps": 10,
+        "mitigate_seconds": 0.006207834000000023
+      }
+    },
+    {
+      "tier": "T13",
+      "name": "Diff Ocean Sunset \u2022 RF \u2022 batch=8",
+      "raw_error": 1.4276866609440808,
+      "mitigated_error": 0.8784105975034204,
+      "improvement_factor": 1.625306735826945,
+      "extra": {
+        "raw_clip": 0.8371683365117625,
+        "mit_clip": 0.9356290651635186,
+        "raw_psnr": 10.885015183510546,
+        "mit_psnr": 14.532505633069574,
+        "psnr_gain_db": 3.6474904495590277,
+        "clip_improvement": 1.1176116252341954,
+        "speedup_vs_gt": 0.6242082560328933,
+        "stage1_survivors": 6,
+        "stage1_rejected": 2,
+        "model_name": "random_forest",
+        "n_batch": 8,
+        "gt_steps": 50,
+        "budget_steps": 10,
+        "mitigate_seconds": 0.08117741700000014
+      }
+    },
+    {
+      "tier": "T13",
+      "name": "Diff City Neon \u2022 RF \u2022 batch=8",
+      "raw_error": 1.4834296435823993,
+      "mitigated_error": 0.8255345369879352,
+      "improvement_factor": 1.796932262815891,
+      "extra": {
+        "raw_clip": 0.8275253656723093,
+        "mit_clip": 0.9392211411042402,
+        "raw_psnr": 8.938541354727482,
+        "mit_psnr": 13.19441953897634,
+        "psnr_gain_db": 4.255878184248859,
+        "clip_improvement": 1.134975651581611,
+        "speedup_vs_gt": 0.6242249113879088,
+        "stage1_survivors": 6,
+        "stage1_rejected": 2,
+        "model_name": "random_forest",
+        "n_batch": 8,
+        "gt_steps": 50,
+        "budget_steps": 10,
+        "mitigate_seconds": 0.07946762500000037
+      }
+    },
+    {
+      "tier": "T13",
+      "name": "Diff Macro Watch \u2022 RF \u2022 batch=16",
+      "raw_error": 1.4466637657567696,
+      "mitigated_error": 0.8090044295573499,
+      "improvement_factor": 1.7882025275786408,
+      "extra": {
+        "raw_clip": 0.8736155829608742,
+        "mit_clip": 0.9621390367113727,
+        "raw_psnr": 10.681344217003552,
+        "mit_psnr": 14.939082522787002,
+        "psnr_gain_db": 4.25773830578345,
+        "clip_improvement": 1.1013299848091918,
+        "speedup_vs_gt": 0.31208847720812394,
+        "stage1_survivors": 12,
+        "stage1_rejected": 4,
+        "model_name": "random_forest",
+        "n_batch": 16,
+        "gt_steps": 50,
+        "budget_steps": 10,
+        "mitigate_seconds": 0.1687820000000002
+      }
+    },
+    {
+      "tier": "T13",
+      "name": "Diff Macro Watch \u2022 Ridge \u2022 batch=8",
+      "raw_error": 1.4466637657567696,
+      "mitigated_error": 0.8147525126267072,
+      "improvement_factor": 1.7755867497638307,
+      "extra": {
+        "raw_clip": 0.8736155829608742,
+        "mit_clip": 0.9521018089951803,
+        "raw_psnr": 10.681344217003552,
+        "mit_psnr": 14.704858860657765,
+        "psnr_gain_db": 4.023514643654213,
+        "clip_improvement": 1.089840689160213,
+        "speedup_vs_gt": 0.6249535707540235,
+        "stage1_survivors": 6,
+        "stage1_rejected": 2,
+        "model_name": "ridge",
+        "n_batch": 8,
+        "gt_steps": 50,
+        "budget_steps": 10,
+        "mitigate_seconds": 0.004754708000000107
       }
     }
   ]

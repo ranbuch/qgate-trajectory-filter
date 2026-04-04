@@ -150,6 +150,31 @@ from qgate.stochastic import (
     simulate_fbm_paths,
 )
 
+# ── Diffusion / PPU Mitigation — generative AI diffusion acceleration ─────
+# Extends the two-stage Galton + ML architecture from QPUs to generative
+# diffusion models (FLUX.2 Klein, FLUX.1, SDXL, Stable Diffusion).
+# Latent tensors from cheap low-step runs are treated as PPU "shots";
+# trajectory filtering + ML reconstruction replaces expensive high-step
+# generation.  Supports 4-channel (FLUX.1/SDXL) and 32-channel (FLUX.2
+# Klein) VAE latent spaces.
+# Patent pending — US App. Nos. 63/983,831 & 63/989,632, IL 326915.
+# CIP addendum §22 — PPU generalisation to generative AI.
+from qgate.diffusion import (
+    LATENT_FEATURE_NAMES,
+    DiffusionCalibrationResult,
+    DiffusionConfig,
+    DiffusionMitigationPipeline,
+    DiffusionMitigationResult,
+    DiffusionMitigator,
+    GaltonLatentFilter,
+    LatentTelemetryExtractor,
+    compute_clip_score,
+    compute_latent_fid,
+    compute_psnr,
+    run_diffusion_benchmark,
+    simulate_diffusion_latents,
+)
+
 # ── Neural Mitigation — PyTorch strategy-based error mitigation ───────────
 # Three interchangeable neural strategies (QJL Linear Transformer, LSTM
 # baseline, Diffusion anomaly detector) for Level-1.5 micro-state telemetry.
@@ -290,6 +315,20 @@ __all__ = [
     "asian_call_payoff",
     "run_monte_carlo_benchmark",
     "simulate_fbm_paths",
+    # Diffusion / PPU Mitigation — generative AI acceleration
+    "LATENT_FEATURE_NAMES",
+    "DiffusionCalibrationResult",
+    "DiffusionConfig",
+    "DiffusionMitigationPipeline",
+    "DiffusionMitigationResult",
+    "DiffusionMitigator",
+    "GaltonLatentFilter",
+    "LatentTelemetryExtractor",
+    "compute_clip_score",
+    "compute_latent_fid",
+    "compute_psnr",
+    "run_diffusion_benchmark",
+    "simulate_diffusion_latents",
 ]
 
 # ── Conditionally extend __all__ with neural mitigation symbols ───────────

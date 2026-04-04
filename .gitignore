@@ -11,6 +11,7 @@ wheels/
 
 # ── Virtual environments ──────────────────────────────────────────────────
 .venv/
+.venv-*/
 venv/
 .conda/
 .pixi/
@@ -52,6 +53,24 @@ simulations/ibm_hardware/galton_experiment/
 # ── Build artifacts ───────────────────────────────────────────────────────
 _placeholder/
 site/
+
+# ── Model weights & HuggingFace cache ─────────────────────────────────────
+*.safetensors
+*.bin
+!requirements*.txt
+*.pt
+*.pth
+*.ckpt
+*.h5
+*.onnx
+*.gguf
+huggingface_cache/
+models/
+
+# ── Generated images & notebook outputs ───────────────────────────────────
+output.png
+*.ipynb_checkpoints/
+notebooks/*.png
 
 # ── Misc ──────────────────────────────────────────────────────────────────
 *.log

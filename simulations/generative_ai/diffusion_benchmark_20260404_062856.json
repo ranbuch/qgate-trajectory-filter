@@ -1,0 +1,380 @@
+[
+  {
+    "prompt": "A macro photography shot of a mechanical watch movement, intricate gears, ruby bearings, dramatic studio lighting, 8k resolution, photorealistic.",
+    "ground_truth": {
+      "steps": 50,
+      "gpu_time": 40.0,
+      "fid": 0.0,
+      "clip_score": 1.0,
+      "psnr": 100.0,
+      "artifacts": "Reference quality \u2014 perfect fidelity"
+    },
+    "raw_budget": {
+      "steps": 10,
+      "gpu_time": 8.0,
+      "fid": 1.4548040587131594,
+      "clip_score": 0.8523165208215834,
+      "psnr": 11.00104348426758,
+      "artifacts": "Minor noise, mostly acceptable"
+    },
+    "qgate_mitigated": {
+      "steps": 10,
+      "n_batch": 8,
+      "gpu_time": 64.082845584,
+      "fid": 0.8377813119253322,
+      "clip_score": 0.9415182374451423,
+      "psnr": 14.939624101590091,
+      "artifacts": "Near-reference quality, minor smoothing in fine textures",
+      "stage1_survivors": 6,
+      "stage1_rejected": 2
+    },
+    "improvement": {
+      "fid_improvement": 1.736496192986004,
+      "clip_improvement": 1.1046579697147882,
+      "psnr_improvement_db": 3.9385806173225113,
+      "compute_roi": 0.6241920070101736,
+      "speedup_vs_gt": 0.6241920070101736
+    },
+    "calibration": {
+      "n_calibration": 16,
+      "model_name": "random_forest",
+      "train_mae": 0.21848714014659132,
+      "pixel_subsample": 1024,
+      "elapsed_seconds": 0.18632291599999995
+    },
+    "timing": {
+      "gt_wall_seconds": 0.00030337500000010564,
+      "raw_wall_seconds": 0.0003871250000000437,
+      "mitigate_wall_seconds": 0.0828455840000002
+    },
+    "params": {
+      "gt_steps": 50,
+      "budget_steps": 10,
+      "n_batch": 8,
+      "n_calibration": 16,
+      "reject_fraction": 0.25,
+      "model_name": "random_forest",
+      "latent_shape": [
+        4,
+        32,
+        32
+      ]
+    },
+    "scenario_name": "Macro Watch \u2022 RF \u2022 batch=8"
+  },
+  {
+    "prompt": "A macro photography shot of a mechanical watch movement, intricate gears, ruby bearings, dramatic studio lighting, 8k resolution, photorealistic.",
+    "ground_truth": {
+      "steps": 50,
+      "gpu_time": 40.0,
+      "fid": 0.0,
+      "clip_score": 1.0,
+      "psnr": 100.0,
+      "artifacts": "Reference quality \u2014 perfect fidelity"
+    },
+    "raw_budget": {
+      "steps": 10,
+      "gpu_time": 8.0,
+      "fid": 1.4548040587131594,
+      "clip_score": 0.8523165208215834,
+      "psnr": 11.00104348426758,
+      "artifacts": "Minor noise, mostly acceptable"
+    },
+    "qgate_mitigated": {
+      "steps": 10,
+      "n_batch": 8,
+      "gpu_time": 64.017739709,
+      "fid": 0.8325479541528782,
+      "clip_score": 0.9415162285106388,
+      "psnr": 14.964603904690765,
+      "artifacts": "Near-reference quality, minor smoothing in fine textures",
+      "stage1_survivors": 6,
+      "stage1_rejected": 2
+    },
+    "improvement": {
+      "fid_improvement": 1.747411727404255,
+      "clip_improvement": 1.1046556126860854,
+      "psnr_improvement_db": 3.9635604204231853,
+      "compute_roi": 0.624826808659984,
+      "speedup_vs_gt": 0.624826808659984
+    },
+    "calibration": {
+      "n_calibration": 16,
+      "model_name": "gradient_boosting",
+      "train_mae": 0.21674419161552702,
+      "pixel_subsample": 1024,
+      "elapsed_seconds": 0.80864
+    },
+    "timing": {
+      "gt_wall_seconds": 0.00023850000000003035,
+      "raw_wall_seconds": 0.00027604200000030943,
+      "mitigate_wall_seconds": 0.017739709000000214
+    },
+    "params": {
+      "gt_steps": 50,
+      "budget_steps": 10,
+      "n_batch": 8,
+      "n_calibration": 16,
+      "reject_fraction": 0.25,
+      "model_name": "gradient_boosting",
+      "latent_shape": [
+        4,
+        32,
+        32
+      ]
+    },
+    "scenario_name": "Macro Watch \u2022 GBR \u2022 batch=8"
+  },
+  {
+    "prompt": "A macro photography shot of a mechanical watch movement, intricate gears, ruby bearings, dramatic studio lighting, 8k resolution, photorealistic.",
+    "ground_truth": {
+      "steps": 50,
+      "gpu_time": 40.0,
+      "fid": 0.0,
+      "clip_score": 1.0,
+      "psnr": 100.0,
+      "artifacts": "Reference quality \u2014 perfect fidelity"
+    },
+    "raw_budget": {
+      "steps": 10,
+      "gpu_time": 8.0,
+      "fid": 1.4548040587131594,
+      "clip_score": 0.8523165208215834,
+      "psnr": 11.00104348426758,
+      "artifacts": "Minor noise, mostly acceptable"
+    },
+    "qgate_mitigated": {
+      "steps": 10,
+      "n_batch": 8,
+      "gpu_time": 64.003651584,
+      "fid": 0.8427068156230357,
+      "clip_score": 0.9418262386947666,
+      "psnr": 14.920964357375317,
+      "artifacts": "Near-reference quality, minor smoothing in fine textures",
+      "stage1_survivors": 6,
+      "stage1_rejected": 2
+    },
+    "improvement": {
+      "fid_improvement": 1.7263466151482159,
+      "clip_improvement": 1.1050193392789114,
+      "psnr_improvement_db": 3.9199208731077366,
+      "compute_roi": 0.6249643420345009,
+      "speedup_vs_gt": 0.6249643420345009
+    },
+    "calibration": {
+      "n_calibration": 16,
+      "model_name": "ridge",
+      "train_mae": 0.22227628489468967,
+      "pixel_subsample": 1024,
+      "elapsed_seconds": 0.0031312909999998695
+    },
+    "timing": {
+      "gt_wall_seconds": 0.00022862500000009334,
+      "raw_wall_seconds": 0.0002841669999997798,
+      "mitigate_wall_seconds": 0.0036515840000004296
+    },
+    "params": {
+      "gt_steps": 50,
+      "budget_steps": 10,
+      "n_batch": 8,
+      "n_calibration": 16,
+      "reject_fraction": 0.25,
+      "model_name": "ridge",
+      "latent_shape": [
+        4,
+        32,
+        32
+      ]
+    },
+    "scenario_name": "Macro Watch \u2022 Ridge \u2022 batch=8"
+  },
+  {
+    "prompt": "A macro photography shot of a mechanical watch movement, intricate gears, ruby bearings, dramatic studio lighting, 8k resolution, photorealistic.",
+    "ground_truth": {
+      "steps": 50,
+      "gpu_time": 40.0,
+      "fid": 0.0,
+      "clip_score": 1.0,
+      "psnr": 100.0,
+      "artifacts": "Reference quality \u2014 perfect fidelity"
+    },
+    "raw_budget": {
+      "steps": 10,
+      "gpu_time": 8.0,
+      "fid": 1.4548040587131594,
+      "clip_score": 0.8523165208215834,
+      "psnr": 11.00104348426758,
+      "artifacts": "Minor noise, mostly acceptable"
+    },
+    "qgate_mitigated": {
+      "steps": 10,
+      "n_batch": 16,
+      "gpu_time": 128.169488959,
+      "fid": 0.8262314047242407,
+      "clip_score": 0.9537433987653101,
+      "psnr": 15.15684438649712,
+      "artifacts": "Near-reference quality, minor smoothing in fine textures",
+      "stage1_survivors": 12,
+      "stage1_rejected": 4
+    },
+    "improvement": {
+      "fid_improvement": 1.7607707119274996,
+      "clip_improvement": 1.1190014219669908,
+      "psnr_improvement_db": 4.15580090222954,
+      "compute_roi": 0.312086755786282,
+      "speedup_vs_gt": 0.312086755786282
+    },
+    "calibration": {
+      "n_calibration": 16,
+      "model_name": "random_forest",
+      "train_mae": 0.21848714014659132,
+      "pixel_subsample": 1024,
+      "elapsed_seconds": 0.278622167
+    },
+    "timing": {
+      "gt_wall_seconds": 0.00027083399999972,
+      "raw_wall_seconds": 0.00028466600000021103,
+      "mitigate_wall_seconds": 0.16948895900000016
+    },
+    "params": {
+      "gt_steps": 50,
+      "budget_steps": 10,
+      "n_batch": 16,
+      "n_calibration": 16,
+      "reject_fraction": 0.25,
+      "model_name": "random_forest",
+      "latent_shape": [
+        4,
+        32,
+        32
+      ]
+    },
+    "scenario_name": "Macro Watch \u2022 RF \u2022 batch=16"
+  },
+  {
+    "prompt": "A vast ocean sunset with golden light reflecting off gentle waves, wispy cirrus clouds painted in coral and lavender, long exposure photography, award-winning nature photo.",
+    "ground_truth": {
+      "steps": 50,
+      "gpu_time": 40.0,
+      "fid": 0.0,
+      "clip_score": 1.0,
+      "psnr": 100.0,
+      "artifacts": "Reference quality \u2014 perfect fidelity"
+    },
+    "raw_budget": {
+      "steps": 10,
+      "gpu_time": 8.0,
+      "fid": 1.347129520612514,
+      "clip_score": 0.8994038227187219,
+      "psnr": 11.657625831801386,
+      "artifacts": "Minor noise, mostly acceptable"
+    },
+    "qgate_mitigated": {
+      "steps": 10,
+      "n_batch": 8,
+      "gpu_time": 64.087096834,
+      "fid": 0.8104164921709377,
+      "clip_score": 0.9633630400784621,
+      "psnr": 15.505250213050491,
+      "artifacts": "Near-reference quality, minor smoothing in fine textures",
+      "stage1_survivors": 6,
+      "stage1_rejected": 2
+    },
+    "improvement": {
+      "fid_improvement": 1.6622681468436475,
+      "clip_improvement": 1.0711129036192042,
+      "psnr_improvement_db": 3.847624381249105,
+      "compute_roi": 0.624150600917514,
+      "speedup_vs_gt": 0.624150600917514
+    },
+    "calibration": {
+      "n_calibration": 16,
+      "model_name": "random_forest",
+      "train_mae": 0.23417011659212172,
+      "pixel_subsample": 1024,
+      "elapsed_seconds": 0.16716212499999994
+    },
+    "timing": {
+      "gt_wall_seconds": 0.00025016600000027367,
+      "raw_wall_seconds": 0.0002790419999998406,
+      "mitigate_wall_seconds": 0.08709683400000001
+    },
+    "params": {
+      "gt_steps": 50,
+      "budget_steps": 10,
+      "n_batch": 8,
+      "n_calibration": 16,
+      "reject_fraction": 0.25,
+      "model_name": "random_forest",
+      "latent_shape": [
+        4,
+        32,
+        32
+      ]
+    },
+    "scenario_name": "Ocean Sunset \u2022 RF \u2022 batch=8"
+  },
+  {
+    "prompt": "A cyberpunk city street at night, neon signs in Japanese and English, rain-slicked asphalt reflecting light, blade runner aesthetic, cinematic 4k photography.",
+    "ground_truth": {
+      "steps": 50,
+      "gpu_time": 40.0,
+      "fid": 0.0,
+      "clip_score": 1.0,
+      "psnr": 100.0,
+      "artifacts": "Reference quality \u2014 perfect fidelity"
+    },
+    "raw_budget": {
+      "steps": 10,
+      "gpu_time": 8.0,
+      "fid": 1.5173398342205593,
+      "clip_score": 0.7628625241616099,
+      "psnr": 9.046270520503276,
+      "artifacts": "Minor noise, mostly acceptable"
+    },
+    "qgate_mitigated": {
+      "steps": 10,
+      "n_batch": 8,
+      "gpu_time": 64.084443709,
+      "fid": 0.808229769406217,
+      "clip_score": 0.8971179809253425,
+      "psnr": 13.458539204877184,
+      "artifacts": "Near-reference quality, minor smoothing in fine textures",
+      "stage1_survivors": 6,
+      "stage1_rejected": 2
+    },
+    "improvement": {
+      "fid_improvement": 1.8773619726173967,
+      "clip_improvement": 1.1759890576762568,
+      "psnr_improvement_db": 4.412268684373908,
+      "compute_roi": 0.6241764410351339,
+      "speedup_vs_gt": 0.6241764410351339
+    },
+    "calibration": {
+      "n_calibration": 16,
+      "model_name": "random_forest",
+      "train_mae": 0.19526320201249098,
+      "pixel_subsample": 1024,
+      "elapsed_seconds": 0.16605929099999983
+    },
+    "timing": {
+      "gt_wall_seconds": 0.00023041700000003829,
+      "raw_wall_seconds": 0.0002701659999999606,
+      "mitigate_wall_seconds": 0.08444370899999987
+    },
+    "params": {
+      "gt_steps": 50,
+      "budget_steps": 10,
+      "n_batch": 8,
+      "n_calibration": 16,
+      "reject_fraction": 0.25,
+      "model_name": "random_forest",
+      "latent_shape": [
+        4,
+        32,
+        32
+      ]
+    },
+    "scenario_name": "City Neon \u2022 RF \u2022 batch=8"
+  }
+]
