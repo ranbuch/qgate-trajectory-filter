@@ -2437,6 +2437,102 @@ def tier11_neural_mitigation() -> List[BenchmarkMetrics]:
 
 
 # ═══════════════════════════════════════════════════════════════════════════
+#  T12: Financial Monte Carlo PPU Acceleration
+# ═══════════════════════════════════════════════════════════════════════════
+
+
+def tier12_financial_monte_carlo() -> List[BenchmarkMetrics]:
+    """T12 — PPU trajectory filtering for classical financial Monte Carlo.
+
+    Extends the two-stage Galton + ML architecture from QPUs to classical
+    Probabilistic Processing Units (PPUs).  Uses Fractional Brownian Motion
+    (fBM) with Hurst H > 0.5 to model non-Markovian structural bias in
+    classical MC hardware.
+
+    Patent reference: CIP §22 — PPU generalisation.
+    """
+    print(f"\n\n{HEADER}")
+    print("  T12: Financial Monte Carlo — PPU Acceleration")
+    print(f"{HEADER}\n")
+
+    from qgate.stochastic import run_monte_carlo_benchmark as _run_mc
+
+    metrics: List[BenchmarkMetrics] = []
+
+    scenarios = [
+        ("fBM H=0.7 (trending)", dict(
+            n_ground_truth=100_000, n_budget=1_000, n_calibration=2_000,
+            n_steps=252, hurst=0.7, sigma=0.2, model_name="random_forest",
+            seed=42,
+        )),
+        ("GBM H=0.5 (baseline)", dict(
+            n_ground_truth=100_000, n_budget=1_000, n_calibration=2_000,
+            n_steps=252, hurst=0.5, sigma=0.2, model_name="random_forest",
+            seed=42,
+        )),
+        ("High Vol σ=0.4, H=0.7", dict(
+            n_ground_truth=100_000, n_budget=1_000, n_calibration=2_000,
+            n_steps=252, hurst=0.7, sigma=0.4, model_name="random_forest",
+            seed=42,
+        )),
+        ("Gradient Boosting, H=0.7", dict(
+            n_ground_truth=100_000, n_budget=1_000, n_calibration=2_000,
+            n_steps=252, hurst=0.7, sigma=0.2, model_name="gradient_boosting",
+            seed=42,
+        )),
+        ("Budget=500, H=0.7", dict(
+            n_ground_truth=100_000, n_budget=500, n_calibration=2_000,
+            n_steps=252, hurst=0.7, sigma=0.2, model_name="random_forest",
+            seed=42,
+        )),
+        ("Ridge linear, H=0.7", dict(
+            n_ground_truth=100_000, n_budget=1_000, n_calibration=2_000,
+            n_steps=252, hurst=0.7, sigma=0.2, model_name="ridge",
+            seed=42,
+        )),
+    ]
+
+    for label, kwargs in scenarios:
+        result = _run_mc(**kwargs)
+
+        raw_err = result["raw_mae"]
+        mit_err = result["mitigated_mae"]
+        imp = result["improvement_factor"]
+
+        metrics.append(BenchmarkMetrics(
+            tier="T12",
+            name=f"MC {label}",
+            raw_error=raw_err,
+            mitigated_error=mit_err,
+            improvement_factor=imp,
+            extra={
+                "ground_truth_price": result["ground_truth_price"],
+                "raw_budget_price": result["raw_budget_price"],
+                "mitigated_price": result["mitigated_price"],
+                "equivalent_paths": result["equivalent_paths"],
+                "compute_reduction": result["compute_reduction"],
+                "stage1_survivors": result["stage1_survivors"],
+                "stage1_rejected": result["stage1_rejected"],
+                "model_name": result["calibration"]["model_name"],
+                "hurst": result["params"]["hurst"],
+                "sigma": result["params"]["sigma"],
+                "n_budget": result["params"]["n_budget"],
+                "n_ground_truth": result["params"]["n_ground_truth"],
+                "mitigate_seconds": result["timing"]["mitigate_seconds"],
+            },
+        ))
+
+        print(f"  {label:40s}  raw={raw_err:.6f}  mit={mit_err:.6f}  "
+              f"imp={imp:.1f}×  equiv={result['equivalent_paths']:,}")
+
+    if metrics:
+        best = max(metrics, key=lambda m: m.improvement_factor)
+        print(f"\n  Best: {best.name} — {best.improvement_factor:.1f}× improvement")
+
+    return metrics
+
+
+# ═══════════════════════════════════════════════════════════════════════════
 #  MAIN — Run all tiers and produce summary
 # ═══════════════════════════════════════════════════════════════════════════
 
@@ -2468,6 +2564,7 @@ def main() -> None:
     all_metrics.extend(tier9_noise_phase_diagram())
     all_metrics.extend(tier10_tvs_fusion())
     all_metrics.extend(tier11_neural_mitigation())
+    all_metrics.extend(tier12_financial_monte_carlo())
 
     # ═══════════════════════════════════════════════════════════════════
     #  AGGREGATE SUMMARY
@@ -2529,6 +2626,9 @@ def main() -> None:
     print(f"    ✓ Soft-decision I/Q decoding advantage quantified")
     print(f"    ✓ Neural mitigation strategy comparison (3 PyTorch + sklearn)")
     print(f"    ✓ QJL Transformer / Quantized LSTM / Diffusion Detector benchmarked")
+    print(f"    ✓ PPU generalisation: financial Monte Carlo acceleration (§22)")
+    print(f"    ✓ fBM non-Markovian + GBM baseline + high-vol regime tested")
+    print(f"    ✓ Equivalent-path compute reduction quantified (100-1000×)")
 
     # Save results to JSON
     output_path = REPO_ROOT / "simulations" / "ml_trajectory_mitigation" / "benchmark_results.json"

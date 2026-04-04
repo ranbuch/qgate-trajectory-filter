@@ -109,6 +109,7 @@ ignore = [
 "src/qgate/compressor.py" = ["UP006", "UP007", "UP035", "UP045"]
 "src/qgate/tvs.py" = ["UP006", "UP007", "UP035", "UP045"]
 "src/qgate/neural_mitigation.py" = ["UP006", "UP007", "UP035", "UP045"]
+"src/qgate/stochastic.py" = ["UP006", "UP007", "UP035", "UP045"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["qgate"]

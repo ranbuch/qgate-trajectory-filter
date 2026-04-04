@@ -1,0 +1,192 @@
+[
+  {
+    "ground_truth_price": 18.373557289486218,
+    "ground_truth_std": 29.595435645645537,
+    "raw_budget_price": 18.189842956731066,
+    "mitigated_price": 18.373556833369413,
+    "raw_mae": 0.1837143327551516,
+    "mitigated_mae": 4.561168047700903e-07,
+    "improvement_factor": 402779.13647087483,
+    "equivalent_paths": 4210147659061592,
+    "compute_reduction": 4210147659061.592,
+    "stage1_survivors": 750,
+    "stage1_rejected": 250,
+    "calibration": {
+      "n_calibration": 2000,
+      "model_name": "random_forest",
+      "train_mae": 0.07305349170261795,
+      "elapsed_seconds": 0.6317266249999998
+    },
+    "timing": {
+      "ground_truth_seconds": 5.603597457999999,
+      "budget_seconds": 0.013465791999999865,
+      "mitigate_seconds": 0.03537158299999987
+    },
+    "params": {
+      "n_ground_truth": 1000000,
+      "n_budget": 1000,
+      "hurst": 0.7,
+      "strike": 100.0,
+      "S0": 100.0,
+      "mu": 0.05,
+      "sigma": 0.2,
+      "T": 1.0,
+      "n_steps": 252,
+      "r": 0.05,
+      "reject_fraction": 0.25
+    },
+    "scenario_name": "Asian Call \u2022 H=0.7 (trending fBM)"
+  },
+  {
+    "ground_truth_price": 5.775782098751308,
+    "ground_truth_std": 7.996974619671853,
+    "raw_budget_price": 5.808367989513624,
+    "mitigated_price": 5.775789428029972,
+    "raw_mae": 0.03258589076231644,
+    "mitigated_mae": 7.3292786639811425e-06,
+    "improvement_factor": 4445.988787744676,
+    "equivalent_paths": 1190498813831,
+    "compute_reduction": 1190498813.831,
+    "stage1_survivors": 750,
+    "stage1_rejected": 250,
+    "calibration": {
+      "n_calibration": 2000,
+      "model_name": "random_forest",
+      "train_mae": 0.013685008883929256,
+      "elapsed_seconds": 0.6305674579999998
+    },
+    "timing": {
+      "ground_truth_seconds": 4.068697917,
+      "budget_seconds": 0.01974979200000071,
+      "mitigate_seconds": 0.03460770900000121
+    },
+    "params": {
+      "n_ground_truth": 1000000,
+      "n_budget": 1000,
+      "hurst": 0.5,
+      "strike": 100.0,
+      "S0": 100.0,
+      "mu": 0.05,
+      "sigma": 0.2,
+      "T": 1.0,
+      "n_steps": 252,
+      "r": 0.05,
+      "reject_fraction": 0.25
+    },
+    "scenario_name": "Asian Call \u2022 H=0.5 (standard GBM baseline)"
+  },
+  {
+    "ground_truth_price": 50.63768913789105,
+    "ground_truth_std": 107.91804588358616,
+    "raw_budget_price": 49.593522358133164,
+    "mitigated_price": 50.63521684289452,
+    "raw_mae": 1.0441667797578873,
+    "mitigated_mae": 0.002472294996529456,
+    "improvement_factor": 422.3471637582334,
+    "equivalent_paths": 1905406163,
+    "compute_reduction": 1905406.163,
+    "stage1_survivors": 750,
+    "stage1_rejected": 250,
+    "calibration": {
+      "n_calibration": 2000,
+      "model_name": "random_forest",
+      "train_mae": 0.3985893361184744,
+      "elapsed_seconds": 0.6658172090000001
+    },
+    "timing": {
+      "ground_truth_seconds": 2.885356290999999,
+      "budget_seconds": 0.0059652909999989845,
+      "mitigate_seconds": 0.033432083000001
+    },
+    "params": {
+      "n_ground_truth": 1000000,
+      "n_budget": 1000,
+      "hurst": 0.7,
+      "strike": 100.0,
+      "S0": 100.0,
+      "mu": 0.05,
+      "sigma": 0.4,
+      "T": 1.0,
+      "n_steps": 252,
+      "r": 0.05,
+      "reject_fraction": 0.25
+    },
+    "scenario_name": "Asian Call \u2022 High Vol \u03c3=0.4, H=0.7"
+  },
+  {
+    "ground_truth_price": 18.373557289486218,
+    "ground_truth_std": 29.595435645645537,
+    "raw_budget_price": 18.189842956731066,
+    "mitigated_price": 18.37665193947408,
+    "raw_mae": 0.1837143327551516,
+    "mitigated_mae": 0.003094649987861686,
+    "improvement_factor": 59.36514096125387,
+    "equivalent_paths": 91458990,
+    "compute_reduction": 91458.99,
+    "stage1_survivors": 750,
+    "stage1_rejected": 250,
+    "calibration": {
+      "n_calibration": 2000,
+      "model_name": "gradient_boosting",
+      "train_mae": 0.026368633431675483,
+      "elapsed_seconds": 0.6068610419999985
+    },
+    "timing": {
+      "ground_truth_seconds": 3.0352028749999995,
+      "budget_seconds": 0.00879879199999678,
+      "mitigate_seconds": 0.025812957999999497
+    },
+    "params": {
+      "n_ground_truth": 1000000,
+      "n_budget": 1000,
+      "hurst": 0.7,
+      "strike": 100.0,
+      "S0": 100.0,
+      "mu": 0.05,
+      "sigma": 0.2,
+      "T": 1.0,
+      "n_steps": 252,
+      "r": 0.05,
+      "reject_fraction": 0.25
+    },
+    "scenario_name": "Asian Call \u2022 Gradient Boosting, H=0.7"
+  },
+  {
+    "ground_truth_price": 18.373557289486218,
+    "ground_truth_std": 29.595435645645537,
+    "raw_budget_price": 17.486152867566723,
+    "mitigated_price": 18.379100779765814,
+    "raw_mae": 0.887404421919495,
+    "mitigated_mae": 0.005543490279595886,
+    "improvement_factor": 160.0804506117373,
+    "equivalent_paths": 28502496,
+    "compute_reduction": 57004.992,
+    "stage1_survivors": 375,
+    "stage1_rejected": 125,
+    "calibration": {
+      "n_calibration": 2000,
+      "model_name": "random_forest",
+      "train_mae": 0.07305349170261795,
+      "elapsed_seconds": 0.6346143340000019
+    },
+    "timing": {
+      "ground_truth_seconds": 2.864738124999999,
+      "budget_seconds": 0.0040246659999993994,
+      "mitigate_seconds": 0.02027841600000002
+    },
+    "params": {
+      "n_ground_truth": 1000000,
+      "n_budget": 500,
+      "hurst": 0.7,
+      "strike": 100.0,
+      "S0": 100.0,
+      "mu": 0.05,
+      "sigma": 0.2,
+      "T": 1.0,
+      "n_steps": 252,
+      "r": 0.05,
+      "reject_fraction": 0.25
+    },
+    "scenario_name": "Asian Call \u2022 Budget=500, H=0.7"
+  }
+]

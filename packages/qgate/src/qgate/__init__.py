@@ -130,6 +130,26 @@ from qgate.tvs import (
     process_telemetry_batch,
 )
 
+# ── Stochastic / PPU Mitigation — financial Monte Carlo acceleration ──────
+# Extends the two-stage Galton + ML architecture from QPUs to classical
+# Probabilistic Processing Units (PPUs): MC simulators, p-bit arrays,
+# TRNGs, thermodynamic samplers.  Split Frontend + Unified Backend.
+# Patent pending — US App. Nos. 63/983,831 & 63/989,632, IL 326915.
+# CIP addendum §22 — PPU generalisation of trajectory filtering.
+from qgate.stochastic import (
+    GaltonOutlierFilter,
+    PPUMitigationPipeline,
+    STOCHASTIC_FEATURE_NAMES,
+    StochasticCalibrationResult,
+    StochasticConfig,
+    StochasticMitigationResult,
+    StochasticMitigator,
+    StochasticTelemetryExtractor,
+    asian_call_payoff,
+    run_monte_carlo_benchmark,
+    simulate_fbm_paths,
+)
+
 # ── Neural Mitigation — PyTorch strategy-based error mitigation ───────────
 # Three interchangeable neural strategies (QJL Linear Transformer, LSTM
 # baseline, Diffusion anomaly detector) for Level-1.5 micro-state telemetry.
@@ -258,6 +278,18 @@ __all__ = [
     "score_outcome",
     # Uzdin scale-factor validator
     "validate_noise_scale_factor",
+    # Stochastic / PPU Mitigation — financial MC acceleration
+    "GaltonOutlierFilter",
+    "PPUMitigationPipeline",
+    "STOCHASTIC_FEATURE_NAMES",
+    "StochasticCalibrationResult",
+    "StochasticConfig",
+    "StochasticMitigationResult",
+    "StochasticMitigator",
+    "StochasticTelemetryExtractor",
+    "asian_call_payoff",
+    "run_monte_carlo_benchmark",
+    "simulate_fbm_paths",
 ]
 
 # ── Conditionally extend __all__ with neural mitigation symbols ───────────

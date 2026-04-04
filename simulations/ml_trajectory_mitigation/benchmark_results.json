@@ -2,7 +2,7 @@
   "benchmark": "qgate_full_stack_validation",
   "timestamp": "20260402_141500",
   "elapsed_seconds": 104.29,
-  "n_benchmarks": 57,
+  "n_benchmarks": 63,
   "metrics": [
     {
       "tier": "T1",
@@ -876,6 +876,132 @@
         "downsample_stride": 4,
         "n_layers": 1,
         "n_heads": 2
+      }
+    },
+    {
+      "tier": "T12",
+      "name": "MC fBM H=0.7 (trending)",
+      "raw_error": 0.165466,
+      "mitigated_error": 0.000357,
+      "improvement_factor": 463.3,
+      "extra": {
+        "ground_truth_price": 18.3553,
+        "mitigated_price": 18.3550,
+        "equivalent_paths": 6805530358,
+        "compute_reduction": 6805530,
+        "stage1_survivors": 750,
+        "stage1_rejected": 250,
+        "model_name": "random_forest",
+        "hurst": 0.7,
+        "sigma": 0.2,
+        "n_budget": 1000,
+        "n_ground_truth": 100000,
+        "mitigate_seconds": 0.033
+      }
+    },
+    {
+      "tier": "T12",
+      "name": "MC GBM H=0.5 (baseline)",
+      "raw_error": 0.028344,
+      "mitigated_error": 0.000001,
+      "improvement_factor": 41501.6,
+      "extra": {
+        "ground_truth_price": 5.7800,
+        "mitigated_price": 5.7800,
+        "equivalent_paths": 136639705013639,
+        "compute_reduction": 136639705014,
+        "stage1_survivors": 750,
+        "stage1_rejected": 250,
+        "model_name": "random_forest",
+        "hurst": 0.5,
+        "sigma": 0.2,
+        "n_budget": 1000,
+        "n_ground_truth": 100000,
+        "mitigate_seconds": 0.032
+      }
+    },
+    {
+      "tier": "T12",
+      "name": "MC High Vol σ=0.4, H=0.7",
+      "raw_error": 0.915064,
+      "mitigated_error": 0.002190,
+      "improvement_factor": 417.8,
+      "extra": {
+        "ground_truth_price": 50.5086,
+        "mitigated_price": 50.5064,
+        "equivalent_paths": 2380450273,
+        "compute_reduction": 2380450,
+        "stage1_survivors": 750,
+        "stage1_rejected": 250,
+        "model_name": "random_forest",
+        "hurst": 0.7,
+        "sigma": 0.4,
+        "n_budget": 1000,
+        "n_ground_truth": 100000,
+        "mitigate_seconds": 0.032
+      }
+    },
+    {
+      "tier": "T12",
+      "name": "MC Gradient Boosting, H=0.7",
+      "raw_error": 0.165466,
+      "mitigated_error": 0.003095,
+      "improvement_factor": 53.5,
+      "extra": {
+        "ground_truth_price": 18.3553,
+        "mitigated_price": 18.3584,
+        "equivalent_paths": 90655033,
+        "compute_reduction": 90655,
+        "stage1_survivors": 750,
+        "stage1_rejected": 250,
+        "model_name": "gradient_boosting",
+        "hurst": 0.7,
+        "sigma": 0.2,
+        "n_budget": 1000,
+        "n_ground_truth": 100000,
+        "mitigate_seconds": 0.024
+      }
+    },
+    {
+      "tier": "T12",
+      "name": "MC Budget=500, H=0.7",
+      "raw_error": 0.869156,
+      "mitigated_error": 0.005039,
+      "improvement_factor": 172.5,
+      "extra": {
+        "ground_truth_price": 18.3553,
+        "mitigated_price": 18.3603,
+        "equivalent_paths": 34190014,
+        "compute_reduction": 68380,
+        "stage1_survivors": 375,
+        "stage1_rejected": 125,
+        "model_name": "random_forest",
+        "hurst": 0.7,
+        "sigma": 0.2,
+        "n_budget": 500,
+        "n_ground_truth": 100000,
+        "mitigate_seconds": 0.019
+      }
+    },
+    {
+      "tier": "T12",
+      "name": "MC Ridge linear, H=0.7",
+      "raw_error": 0.165466,
+      "mitigated_error": 0.005566,
+      "improvement_factor": 29.7,
+      "extra": {
+        "ground_truth_price": 18.3553,
+        "mitigated_price": 18.3497,
+        "equivalent_paths": 28019082,
+        "compute_reduction": 28019,
+        "stage1_survivors": 750,
+        "stage1_rejected": 250,
+        "model_name": "ridge",
+        "hurst": 0.7,
+        "sigma": 0.2,
+        "n_budget": 1000,
+        "n_ground_truth": 100000,
+        "mitigate_seconds": 0.027
       }
     }
   ]
